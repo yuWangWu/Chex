@@ -127,7 +127,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Baldosa.cpp" />
     <ClCompile Include="Chex.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Baldosa.h" />
+    <ClInclude Include="Color.h" />
+    <ClInclude Include="Hexagono.h" />
+    <ClInclude Include="Presets.h" />
+    <ClInclude Include="Vector2d.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
