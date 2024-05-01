@@ -2,9 +2,10 @@
 	Trabajo de Informatica Industrial
 	Curso 2023-2024
 	
-	Proyecto:		Chex
+	Proyecto:	Chex
 	Integrantes:	Dario Carnes Blasco
-					Yu Wang Wu
+			Yu Wang Wu
+   
 	Descripcion:	Ajedrez Hexagonal
 ***********************************************/
 
