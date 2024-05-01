@@ -13,7 +13,17 @@
 // Definiciones librerias del usuario
 #include "freeglut.h"
 // Definiciones librerias de objetos
+#include "Tablero.h"
+#include "VectoresUtiles.h"
+#include "Camara.h"
 
+// Definicion variables del usuario
+Vector3Dfloat ojo(0.0f, 0.0f, 100.0f);
+Vector3Dfloat direccion(0.0f, 0.0f, 0.0f);
+Vector3Dfloat arriba(0.0f, 1.0f, 0.0f);
+
+Camara camara(ojo, direccion, arriba);
+Tablero tablero;
 
 // Definicion de los Callbacks
 void OnDraw(void);
@@ -36,7 +46,7 @@ int main(int argc, char* argv[]) {
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_COLOR_MATERIAL);
 	glMatrixMode(GL_PROJECTION);
-	gluPerspective(40.0, 1920 / 1080.0f, 0.1, 150);
+	gluPerspective(100.0, 1920 / 1080.0f, 0.1, 150);
 
 	// Registro de Callbacks
 	glutDisplayFunc(OnDraw);
@@ -58,7 +68,8 @@ void OnDraw(void) {
 	glLoadIdentity();
 
 	// Codigo del usuario comienza
-
+	camara.inicia();
+	tablero.dibujar();
 
 	// Codigo del usuario termina
 

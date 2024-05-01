@@ -62,34 +62,28 @@ int main() {
         }
     }
 
-    std::ofstream aristas("aristas.txt");
-
-    aristas << "Comienzo de la escritura\n";
+    std::ofstream aristas("datosBaldosas.txt");
 
     for (auto x:{0, 1, 2, 3, 4, 5}) {
         for (int i = 0; i <= (5 + x); i++) {
-            aristas << "Hexagon (" << x << ", " << i << ")\n";
-            aristas << "C: " << tablero[x][i].centro.x << ", " << tablero[x][i].centro.y << "\n";
-            aristas << "e0: " << tablero[x][i].e0.x << ", " << tablero[x][i].e0.y << "\n";
-            aristas << "e1: " << tablero[x][i].e1.x << ", " << tablero[x][i].e1.y << "\n";
-            aristas << "e2: " << tablero[x][i].e2.x << ", " << tablero[x][i].e2.y << "\n";
-            aristas << "e3: " << tablero[x][i].e3.x << ", " << tablero[x][i].e3.y << "\n";
-            aristas << "e4: " << tablero[x][i].e4.x << ", " << tablero[x][i].e4.y << "\n";
-            aristas << "e5: " << tablero[x][i].e5.x << ", " << tablero[x][i].e5.y << "\n";
-            aristas << "\n\n";
+            aristas << tablero[x][i].centro.x << " " << tablero[x][i].centro.y << " ";
+            aristas << tablero[x][i].e0.x << " " << tablero[x][i].e0.y << " ";
+            aristas << tablero[x][i].e1.x << " " << tablero[x][i].e1.y << " ";
+            aristas << tablero[x][i].e2.x << " " << tablero[x][i].e2.y << " ";
+            aristas << tablero[x][i].e3.x << " " << tablero[x][i].e3.y << " ";
+            aristas << tablero[x][i].e4.x << " " << tablero[x][i].e4.y << " ";
+            aristas << tablero[x][i].e5.x << " " << tablero[x][i].e5.y << "\n";
         }
     }
     for (auto x:{6, 7, 8, 9, 10}) {
-        for (int i = 1; i <= (15 - x); i++) {
-            aristas << "Hexagon (" << x << ", " << i << ")\n";
-            aristas << "C: " << tablero[x][i].centro.x << ", " << tablero[x][i].centro.y << "\n";
-            aristas << "e0: " << tablero[x][i].e0.x << ", " << tablero[x][i].e0.y << "\n";
-            aristas << "e1: " << tablero[x][i].e1.x << ", " << tablero[x][i].e1.y << "\n";
-            aristas << "e2: " << tablero[x][i].e2.x << ", " << tablero[x][i].e2.y << "\n";
-            aristas << "e3: " << tablero[x][i].e3.x << ", " << tablero[x][i].e3.y << "\n";
-            aristas << "e4: " << tablero[x][i].e4.x << ", " << tablero[x][i].e4.y << "\n";
-            aristas << "e5: " << tablero[x][i].e5.x << ", " << tablero[x][i].e5.y << "\n";
-            aristas << "\n\n";
+        for (int i = 0; i <= (15 - x); i++) {
+            aristas << tablero[x][i].centro.x << " " << tablero[x][i].centro.y << " ";
+            aristas << tablero[x][i].e0.x << " " << tablero[x][i].e0.y << " ";
+            aristas << tablero[x][i].e1.x << " " << tablero[x][i].e1.y << " ";
+            aristas << tablero[x][i].e2.x << " " << tablero[x][i].e2.y << " ";
+            aristas << tablero[x][i].e3.x << " " << tablero[x][i].e3.y << " ";
+            aristas << tablero[x][i].e4.x << " " << tablero[x][i].e4.y << " ";
+            aristas << tablero[x][i].e5.x << " " << tablero[x][i].e5.y << "\n";
         }
     }
 

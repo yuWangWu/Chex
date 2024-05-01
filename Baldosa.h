@@ -1,19 +1,19 @@
 #pragma once
 
-#include "Vector2d.h"
+#include "VectoresUtiles.h"
 #include "Color.h"
 #include "Hexagono.h"
 
 class Baldosa {
 public:
-	Hexagono posicion;
-	Coordenadas coordenadas;
+	Hexagono hexagono;
+	Vector2Dint identificador;
 	Color color;
 
 	// Posicion baldosas colindantes
-	Coordenadas bArriba, bAbajo, bIzqArriba, bIzqAbajo, bDerArriba, bDerAbajo; // Tocan lados
-	Coordenadas bEsqIzquierda, bEsqDerecha, bEsqIzqArriba, bEsqIzqAbajo, bEsqDerArriba, bEsqDerAbajo; // "Tocan" esquinas
-	Coordenadas bCaballoDerArriba, bCaballoDerAbajo, bCaballoIzqArriba, bCaballoIzqAbajo,
+	Vector2Dint bArriba, bAbajo, bIzqArriba, bIzqAbajo, bDerArriba, bDerAbajo; // Tocan lados
+	Vector2Dint bEsqIzquierda, bEsqDerecha, bEsqIzqArriba, bEsqIzqAbajo, bEsqDerArriba, bEsqDerAbajo; // "Tocan" esquinas
+	Vector2Dint bCaballoDerArriba, bCaballoDerAbajo, bCaballoIzqArriba, bCaballoIzqAbajo,
 		bCaballoEsqIzqArrArriba, bCaballoEsqIzqArrAbajo, bCaballoEsqDerArrArriba, bCaballoEsqDerArrAbajo,
 		bCaballoEsqDerAbjArriba, bCaballoEsqDerAbjAbajo, bCaballoEsqIzqAbjArriba, bCaballoEsqIzqAbjAbajo; // Lo que sea que haga el caballo
 };

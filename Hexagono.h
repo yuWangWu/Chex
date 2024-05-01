@@ -1,9 +1,10 @@
 #pragma once
 
-#include "Vector2d.h"
+#include "VectoresUtiles.h"
 
 class Hexagono {
 public:
+	Vector2Dfloat centro;
 	Vector2Dfloat lado0;
 	Vector2Dfloat lado1;
 	Vector2Dfloat lado2;
