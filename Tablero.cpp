@@ -18,6 +18,9 @@ Tablero::Tablero() {
 	if (fileDatosBaldosas.good()) {
 		for (int columna = 0; columna < tablero.size(); columna++) {	// Iterador columnas
 			for (int fila = 0; fila < tablero[columna].size(); fila++) {
+				tablero[columna][fila].identificador.col = columna;
+				tablero[columna][fila].identificador.row = fila;
+
 				fileDatosBaldosas >> tablero[columna][fila].hexagono.centro.x
 					>> tablero[columna][fila].hexagono.centro.y
 					>> tablero[columna][fila].hexagono.lado0.x
@@ -32,6 +35,8 @@ Tablero::Tablero() {
 					>> tablero[columna][fila].hexagono.lado4.y
 					>> tablero[columna][fila].hexagono.lado5.x
 					>> tablero[columna][fila].hexagono.lado5.y;
+
+				tablero[columna][fila].findPosicionesTodas(tablero[columna][fila], tablero);
 
 				// Me da un aviso, no se si funciona pero lo dejo por si acaso.
 				//tablero[columna][fila].color = (rotadorColores == 0) ? rotadorColores++, grisOscuro :
@@ -69,6 +74,8 @@ Tablero::Tablero() {
 	else {
 		throw std::exception("No se ha podido abrir.");
 	}
+
+	fileDatosBaldosas.close();
 }
 
 void Tablero::dibujar() {
