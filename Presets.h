@@ -2,6 +2,9 @@
 
 #include "Color.h"
 
+// Constantes
+float pi = 3.14159265;
+
 // Colores
 Color blanco{ 255, 255, 255 };
 

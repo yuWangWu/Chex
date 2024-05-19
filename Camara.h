@@ -9,5 +9,5 @@ public:
 
 public:
 	Camara(Vector3Dfloat nuevoOjo, Vector3Dfloat nuevoDireccion, Vector3Dfloat nuevoArriba);
-	void inicia();
+	void inicia() const;
 };

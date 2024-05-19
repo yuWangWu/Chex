@@ -1,5 +1,6 @@
 #pragma once
 #include "Baldosa.h"
+#include "Esfera.h"
 
 #include <vector>
 
@@ -21,5 +22,5 @@ public:
 
 public:
 	Tablero();
-	void dibujar();
+	void dibujar() const;
 };

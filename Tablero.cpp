@@ -2,6 +2,7 @@
 #include "Presets.h"
 #include "freeglut.h"
 
+#include <iostream>
 #include <fstream>
 
 Tablero::Tablero() {
@@ -48,6 +49,8 @@ Tablero::Tablero() {
 					tablero[columna][fila].color = grisClaro, rotadorColoresfilas++;
 				else
 					tablero[columna][fila].color = blanco, rotadorColoresfilas = 0;
+
+				tablero[columna][fila].colorDisplay = tablero[columna][fila].color;
 			}
 			if (columna < 5) {
 				if (rotadorColorescolumnas == 0)
@@ -78,13 +81,13 @@ Tablero::Tablero() {
 	fileDatosBaldosas.close();
 }
 
-void Tablero::dibujar() {
+void Tablero::dibujar() const {
 	glDisable(GL_LIGHTING);
 	// Dibujar todas las baldosas
 	for (int columna = 0; columna < tablero.size(); columna++) {
 		for (int fila = 0; fila < tablero[columna].size(); fila++) {
 			glBegin(GL_POLYGON);
-			glColor3ub(tablero[columna][fila].color.r, tablero[columna][fila].color.g, tablero[columna][fila].color.b);
+			glColor3ub(tablero[columna][fila].colorDisplay.r, tablero[columna][fila].colorDisplay.g, tablero[columna][fila].colorDisplay.b);
 			glVertex3d(tablero[columna][fila].hexagono.lado0.x, tablero[columna][fila].hexagono.lado0.y, 0);
 			glVertex3d(tablero[columna][fila].hexagono.lado1.x, tablero[columna][fila].hexagono.lado1.y, 0);
 			glVertex3d(tablero[columna][fila].hexagono.lado2.x, tablero[columna][fila].hexagono.lado2.y, 0);
