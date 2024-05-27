@@ -19,25 +19,30 @@ public:
 };
 
 // Punto 3D
-class Vector3Dfloat {
+struct Vector3Dfloat {
+	// Solo se usa para el STL loader
+	float x, y, z;
+};
+
+class Vector3Ddouble {
 public:
 	double x, y, z;
 
 public:
 	// Inicializadores
-	Vector3Dfloat();
-	Vector3Dfloat(double nuevox, double nuevoy, double nuevoz);
+	Vector3Ddouble();
+	Vector3Ddouble(double nuevox, double nuevoy, double nuevoz);
 
 	// Sobrecarga de operadores
-	Vector3Dfloat operator+(Vector3Dfloat otroVector);
-	Vector3Dfloat operator-(Vector3Dfloat otroVector);
-	Vector3Dfloat operator*(double valor);
-	Vector3Dfloat operator/(double valor);
+	Vector3Ddouble operator+(Vector3Ddouble otroVector);
+	Vector3Ddouble operator-(Vector3Ddouble otroVector);
+	Vector3Ddouble operator*(double valor);
+	Vector3Ddouble operator/(double valor);
 
 	// Operaciones
 	double modulo();
-	Vector3Dfloat unitario();
-	Vector3Dfloat crossProduct(Vector3Dfloat otroVector);
+	Vector3Ddouble unitario();
+	Vector3Ddouble crossProduct(Vector3Ddouble otroVector);
 };
 
 class Vector4Dfloat {

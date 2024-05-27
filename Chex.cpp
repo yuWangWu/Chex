@@ -21,21 +21,24 @@
 #include "Raton.h"
 #include "Esfera.h"
 
+	// Desarrollo 
+	// Poner en otro lado
+	#include <vector>
+	#include "stb_stl_loader.h"
+
+	std::vector<Vector3Dfloat> vertices;
+	std::vector<Vector3Dfloat> normals;
+	// Fin desarrollo
+
+
 // Definicion variables del usuario
 Vector2Dfloat Raton::posicionVentana(0, 0);
-Vector3Dfloat Raton::posicionMundo(0, 0, 0);
+Vector3Ddouble Raton::posicionMundo(0, 0, 0);
 
-Vector3Dfloat ojo(0.0, -100.0, 100.0);
-Vector3Dfloat direccion(0.0, 0.0, 0.0);
-Vector3Dfloat arriba(0.0, 1.0, 0.0);
-
-Camara camara(ojo, direccion, arriba);
+Camara camara({ 0.0, -100.0, 100 }, { 0.0, 0.0, 0.0 }, { 0.0, 1.0, 0.0 });
 Perspectiva perspectiva(100.0, 1920, 1080, 0.1, 250);
 
 Tablero tablero;
-
-Esfera esfera(2, 20, 20, { 0, 0, 0 });
-Linea linea({0, 0, 99.4}, ojo);
 
 // Definicion de los Callbacks
 void OnDraw(void);
@@ -45,6 +48,15 @@ void OnTimer(int value);
 
 // Codigo
 int main(int argc, char* argv[]) {
+
+		// Desarrollo 
+		// Poner en otro lado
+		const char* filename = "gameData/Reina.stl";
+		if (!loadSTL(filename, vertices, normals)) {
+			return -1;
+		}
+		// Fin desarrollo
+
 	// Inicializacion y creacion de la ventana.
 	glutInit(&argc, argv);
 	perspectiva.crearVentana();
@@ -85,11 +97,20 @@ void OnDraw(void) {
 	camara.inicia();
 	tablero.dibujar();
 
-	esfera.dibuja();
-	//linea.dibuja();
+		// Desarrollo
+		// Poner en otro lado
+		glBegin(GL_TRIANGLES);
+		glColor3ub(20, 29, 20);
+		for (size_t i = 0; i < vertices.size(); ++i) {
+			glNormal3f(normals[i].x, normals[i].y, normals[i].z);
+			glVertex3f(vertices[i].x, vertices[i].y, vertices[i].z);
+		}
+		glEnd();
+		// Fin desarrollo
 
 	// Codigo del usuario termina
 
+	// No borrar
 	glutSwapBuffers();
 }
 
@@ -99,6 +120,7 @@ void OnKeyboardDown(unsigned char key, int x_t, int y_t) {
 
 	// Codigo del usuario termina
 
+	// No borrar
 	glutPostRedisplay();
 }
 
@@ -108,10 +130,12 @@ void OnKeyboardDown(unsigned char key, int x_t, int y_t) {
 // ESTE CODIGO ES PROPIEDAD DE PABLO SAN SEGUNDO
 void OnMouseClick(int b, int state, int x, int y) {
 	// Codigo del usuario comienza
-	Raton::MouseHandler(b, state, x, y, esfera);
+	Raton::MouseHandler(b, state, x, y);
+	tablero.seleccionRaton(Raton::MouseHandler(b, state, x, y));
 
 	// Codigo del usuario termina
 
+	// No borrar
 	glutPostRedisplay();
 }
 
@@ -121,6 +145,7 @@ void OnTimer(int value) {
 
 	// Codigo del usuario termina
 
+	// No borrar
 	glutTimerFunc(0.017, OnTimer, 0);
 	glutPostRedisplay();
 }

@@ -1,14 +1,16 @@
+#include <iostream>
+#include <fstream>
+
 #include "Tablero.h"
 #include "Presets.h"
 #include "freeglut.h"
-
-#include <iostream>
-#include <fstream>
+#include "Raton.h"
 
 Tablero::Tablero() {
 	int rotadorColoresfilas = 0;
 	int rotadorColorescolumnas = 0;
 	std::ifstream fileDatosBaldosas("gameData/datosBaldosas.txt");
+
 	// Estructura de los datos del archivo:
 	// 1 baldosa por linea.
 	// 7 puntos por linea.
@@ -98,4 +100,40 @@ void Tablero::dibujar() const {
 		}
 	}
 	glEnable(GL_LIGHTING);
+}
+
+
+bool Tablero::seleccionRaton(Vector3Ddouble _posicion) {
+	if (_posicion.z > -1) {
+		toggleColorB(pos2baldosa(_posicion.x, _posicion.y));
+		return true;
+	}
+	return false;
+}
+
+Vector2Dint Tablero::pos2baldosa(double x, double y) const {
+	for (int columna = 0; columna < tablero.size(); columna++) {
+		for (int fila = 0; fila < tablero[columna].size(); fila++) {
+			if (derecha(x, y, tablero[columna][fila].hexagono.lado3, tablero[columna][fila].hexagono.lado2))
+				if (!derecha(x, y, tablero[columna][fila].hexagono.lado0, tablero[columna][fila].hexagono.lado1))
+					return tablero[columna][fila].identificador;
+			if (derecha(x, y, tablero[columna][fila].hexagono.lado4, tablero[columna][fila].hexagono.lado3))
+				if (!derecha(x, y, tablero[columna][fila].hexagono.lado5, tablero[columna][fila].hexagono.lado0))
+					return tablero[columna][fila].identificador;
+		}
+	}
+}
+
+bool Tablero::derecha(double x, double y, Vector2Dfloat p1, Vector2Dfloat p2) const {
+	if (((y >= p1.y) && (y <= p2.y)) && ((x <= p1.x) || (x <= p2.x))) {
+		double interseccionX = (y - p1.y) * ((p2.x - p1.x) / (p2.y - p1.y)) + p1.x;
+		if (x <= interseccionX)
+			return true;
+	}
+	return false;
+}
+
+
+void Tablero::toggleColorB(Vector2Dint _identificador) {
+	tablero[_identificador.col][_identificador.row].colorDisplay = rojo;
 }

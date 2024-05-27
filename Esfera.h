@@ -4,10 +4,10 @@
 class Esfera {
 public:
 	float radio, rings, slices;
-	Vector3Dfloat posicion;
+	Vector3Ddouble posicion;
 
 public:
-	Esfera(float nradio, float nrings, float nslices, Vector3Dfloat nposicion);
+	Esfera(float nradio, float nrings, float nslices, Vector3Ddouble nposicion);
 
 	void dibuja();
 
@@ -15,10 +15,10 @@ public:
 
 class Linea {
 public:
-	Vector3Dfloat origen, final;
+	Vector3Ddouble origen, final;
 
 public:
-	Linea(Vector3Dfloat norigen, Vector3Dfloat nfinal);
+	Linea(Vector3Ddouble norigen, Vector3Ddouble nfinal);
 	
 	void dibuja();
 };

@@ -1,10 +1,10 @@
 #pragma once
 
+#include <vector>
+
 #include "VectoresUtiles.h"
 #include "Color.h"
 #include "Hexagono.h"
-
-#include <vector>
 
 class Baldosa {
 public:

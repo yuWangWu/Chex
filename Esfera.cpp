@@ -1,7 +1,7 @@
 #include "Esfera.h"
 #include "freeglut.h"
 
-Esfera::Esfera(float nradio, float nslices, float nrings, Vector3Dfloat nposicion) {
+Esfera::Esfera(float nradio, float nslices, float nrings, Vector3Ddouble nposicion) {
 	radio = nradio;
 	slices = nslices;
 	rings = nrings;
@@ -15,7 +15,7 @@ void Esfera::dibuja() {
 	glTranslated(-posicion.x, -posicion.y, -posicion.z);
 }
 
-Linea::Linea(Vector3Dfloat norigen, Vector3Dfloat nfinal) {
+Linea::Linea(Vector3Ddouble norigen, Vector3Ddouble nfinal) {
 	origen = norigen;
 	final = nfinal;
 }

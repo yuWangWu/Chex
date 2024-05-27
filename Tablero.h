@@ -1,8 +1,9 @@
 #pragma once
-#include "Baldosa.h"
-#include "Esfera.h"
 
 #include <vector>
+
+#include "Baldosa.h"
+#include "Esfera.h"
 
 class Tablero {
 public:
@@ -23,4 +24,13 @@ public:
 public:
 	Tablero();
 	void dibujar() const;
+
+	void toggleColorB(Vector2Dint _identificador);
+
+	bool seleccionRaton(Vector3Ddouble _posicion);
+	Vector2Dint pos2baldosa(double x, double y) const;
+	bool derecha(double x, double y, Vector2Dfloat p1, Vector2Dfloat p2) const;
+
+	auto begin() { return tablero.begin(); };
+	auto end() { return tablero.end(); };
 };

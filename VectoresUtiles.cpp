@@ -11,44 +11,44 @@ Vector2Dfloat::Vector2Dfloat(double nuevox, double nuevoy) {
 	y = nuevoy;
 }
 
-Vector3Dfloat::Vector3Dfloat() {
+Vector3Ddouble::Vector3Ddouble() {
 	x = 0;
 	y = 0;
 	z = 0;
 }
 
-Vector3Dfloat::Vector3Dfloat(double nuevox, double nuevoy, double nuevoz) {
+Vector3Ddouble::Vector3Ddouble(double nuevox, double nuevoy, double nuevoz) {
 	x = nuevox;
 	y = nuevoy;
 	z = nuevoz;
 }
 
-Vector3Dfloat Vector3Dfloat::operator+(Vector3Dfloat otroVector) {
-	return Vector3Dfloat(x + otroVector.x, y + otroVector.y, z + otroVector.z);
+Vector3Ddouble Vector3Ddouble::operator+(Vector3Ddouble otroVector) {
+	return Vector3Ddouble(x + otroVector.x, y + otroVector.y, z + otroVector.z);
 }
 
-Vector3Dfloat Vector3Dfloat::operator-(Vector3Dfloat otroVector) {
-	return Vector3Dfloat(x - otroVector.x, y - otroVector.y, z - otroVector.z);
+Vector3Ddouble Vector3Ddouble::operator-(Vector3Ddouble otroVector) {
+	return Vector3Ddouble(x - otroVector.x, y - otroVector.y, z - otroVector.z);
 }
 
-Vector3Dfloat Vector3Dfloat::operator*(double valor) {
-	return Vector3Dfloat(x * valor, y * valor, z * valor);
+Vector3Ddouble Vector3Ddouble::operator*(double valor) {
+	return Vector3Ddouble(x * valor, y * valor, z * valor);
 }
 
-Vector3Dfloat Vector3Dfloat::operator/(double valor) {
-	return Vector3Dfloat(x / valor, y / valor, z / valor);
+Vector3Ddouble Vector3Ddouble::operator/(double valor) {
+	return Vector3Ddouble(x / valor, y / valor, z / valor);
 }
 
-double Vector3Dfloat::modulo() {
+double Vector3Ddouble::modulo() {
 	return (sqrt(pow(x, 2) + pow(y, 2) + pow(z, 2)));
 }
 
-Vector3Dfloat Vector3Dfloat::unitario() {
+Vector3Ddouble Vector3Ddouble::unitario() {
 	return (*this / modulo());
 }
 
-Vector3Dfloat Vector3Dfloat::crossProduct(Vector3Dfloat otroVector) {
-	return Vector3Dfloat(y * otroVector.z - z * otroVector.y,
+Vector3Ddouble Vector3Ddouble::crossProduct(Vector3Ddouble otroVector) {
+	return Vector3Ddouble(y * otroVector.z - z * otroVector.y,
 		z * otroVector.x - x * otroVector.z,
 		x * otroVector.y - y * otroVector.x);
 }
