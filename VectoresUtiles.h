@@ -5,6 +5,9 @@ class Vector2Dint {
 public:
 	bool existe = true;
 	int col, row;
+
+public:
+	bool operator==(Vector2Dint _vect);
 };
 
 // Punto 2D
@@ -16,6 +19,8 @@ public:
 	// Inicializadores
 	Vector2Dfloat();
 	Vector2Dfloat(double nuevox, double nuevoy);
+
+	Vector2Dfloat operator-(Vector2Dfloat _vect) { return Vector2Dfloat({ x - _vect.x, y - _vect.y }); };
 };
 
 // Punto 3D

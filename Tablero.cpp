@@ -103,12 +103,22 @@ void Tablero::dibujar() const {
 }
 
 
+void Tablero::resetColores() {
+	for (int columna = 0; columna < tablero.size(); columna++) 
+		for (int fila = 0; fila < tablero[columna].size(); fila++) 
+			tablero[columna][fila].colorDisplay = tablero[columna][fila].color;
+}
+
 bool Tablero::seleccionRaton(Vector3Ddouble _posicion) {
-	if (_posicion.z > -1) {
-		toggleColorB(pos2baldosa(_posicion.x, _posicion.y));
+	resetColores();
+
+	Vector2Dint baldosaSeleccionada = pos2baldosa(_posicion.x, _posicion.y);
+	if (baldosaSeleccionada.existe) {
+		toggleColorB(baldosaSeleccionada);
 		return true;
 	}
-	return false;
+	else
+		return false;
 }
 
 Vector2Dint Tablero::pos2baldosa(double x, double y) const {
@@ -122,6 +132,8 @@ Vector2Dint Tablero::pos2baldosa(double x, double y) const {
 					return tablero[columna][fila].identificador;
 		}
 	}
+
+	return Vector2Dint{ false, -1, -1};
 }
 
 bool Tablero::derecha(double x, double y, Vector2Dfloat p1, Vector2Dfloat p2) const {
@@ -136,4 +148,12 @@ bool Tablero::derecha(double x, double y, Vector2Dfloat p1, Vector2Dfloat p2) co
 
 void Tablero::toggleColorB(Vector2Dint _identificador) {
 	tablero[_identificador.col][_identificador.row].colorDisplay = rojo;
+}
+
+
+std::vector<Baldosa> Tablero::operator[](int indice)
+{
+	if (indice >= tablero.size()) indice = (int)(tablero.size()) -1;
+	if (indice < 0) indice = 0;
+	return tablero[indice];
 }

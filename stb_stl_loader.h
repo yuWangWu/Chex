@@ -58,7 +58,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include "VectoresUtiles.h"
 
-bool loadSTL(const char* filename, std::vector<Vector3Dfloat>& vertices, std::vector<Vector3Dfloat>& normals) {
+bool loadSTL(const char* filename, std::vector<Vector3Dfloat>& vertices, std::vector<Vector3Dfloat>& normals, Vector2Dfloat posicion) {
     std::ifstream file(filename, std::ios::binary);
     if (!file) {
         std::cerr << "Error opening file: " << filename << std::endl;
@@ -81,12 +81,12 @@ bool loadSTL(const char* filename, std::vector<Vector3Dfloat>& vertices, std::ve
         file.read(reinterpret_cast<char*>(&v2), sizeof(Vector3Dfloat));
         file.read(reinterpret_cast<char*>(&v3), sizeof(Vector3Dfloat));
 
-        v1.x = v1.x - 75;
-        v1.y = v1.y - 43.3013;
-        v2.x = v2.x - 75;
-        v2.y = v2.y - 43.3013;
-        v3.x = v3.x - 75;
-        v3.y = v3.y - 43.3013;
+        v1.x = v1.x + posicion.x;
+        v1.y = v1.y + posicion.y;
+        v2.x = v2.x + posicion.x;
+        v2.y = v2.y + posicion.y;
+        v3.x = v3.x + posicion.x;
+        v3.y = v3.y + posicion.y;
 
         vertices.push_back(v1);
         vertices.push_back(v2);

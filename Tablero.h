@@ -25,11 +25,14 @@ public:
 	Tablero();
 	void dibujar() const;
 
+	void resetColores();
 	void toggleColorB(Vector2Dint _identificador);
 
 	bool seleccionRaton(Vector3Ddouble _posicion);
 	Vector2Dint pos2baldosa(double x, double y) const;
 	bool derecha(double x, double y, Vector2Dfloat p1, Vector2Dfloat p2) const;
+
+	std::vector<Baldosa> operator[](int indice);
 
 	auto begin() { return tablero.begin(); };
 	auto end() { return tablero.end(); };

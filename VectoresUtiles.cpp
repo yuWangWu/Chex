@@ -1,6 +1,12 @@
 #include "VectoresUtiles.h"
 #include <cmath>
 
+bool Vector2Dint::operator==(Vector2Dint _vect) {
+	if ((col == _vect.col) && (row == _vect.row))
+		return true;
+	return false;
+}
+
 Vector2Dfloat::Vector2Dfloat() {
 	x = 0;
 	y = 0;
