@@ -30,6 +30,7 @@ public:
 	void setPosMundoAnterior(Vector2Dfloat _posMundo) { posMundoAnterior = _posMundo; };
 	void setSincronia(bool _sincronia) { sincronia = _sincronia; };
 
+	// Misc
 	void dibuja();
 	void mover();
 	//virtual bool caminosPosibles() = 0;

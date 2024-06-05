@@ -7,7 +7,7 @@ Camara::Camara(Vector3Ddouble nuevoOjo, Vector3Ddouble nuevoDireccion, Vector3Dd
 	arriba = nuevoArriba;
 }
 
-void Camara::inicia() const {
+void Camara::actualiza() const {
 	gluLookAt(ojo.x, ojo.y, ojo.z,
 		direccion.x, direccion.y, direccion.z,
 		arriba.x, arriba.y, arriba.z);

@@ -21,21 +21,11 @@
 #include "Raton.h"
 #include "Esfera.h"
 #include "ListaPiezas.h"
+#include "MaqEstados.h"
 
 // Definicion variables del usuario
-Vector2Dfloat Raton::posicionVentana(0, 0);
-Vector3Ddouble Raton::posicionMundo(0, 0, 0);
-
-Camara camara({ 0.0, -100.0, 100 }, { 0.0, 0.0, 0.0 }, { 0.0, 1.0, 0.0 });
 Perspectiva perspectiva(100.0, 1920, 1080, 0.1, 250);
-
-// Desarrollo
-// Borrar despues
-ListaPiezas piezasBlancas;
-ListaPiezas piezasNegras;
-// Fin desarrollo
-
-Tablero tablero;
+MaqEstados chex;
 
 // Definicion de los Callbacks
 void OnDraw(void);
@@ -51,9 +41,6 @@ int main(int argc, char* argv[]) {
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
 	glutCreateWindow("Chex - Ajedrez Hexagonal");
 
-	// Inicializacion de luces y perspectiva.
-	// Primero se hace la version en 2D y luego 
-	// se pasa a 3D.
 	glEnable(GL_LIGHT0);
 	glEnable(GL_LIGHTING);
 	glEnable(GL_DEPTH_TEST);
@@ -66,14 +53,6 @@ int main(int argc, char* argv[]) {
 	glutTimerFunc(0.017, OnTimer, 0); // ~60 FPS
 	glutKeyboardFunc(OnKeyboardDown);
 	glutMouseFunc(OnMouseClick);
-
-		// Desarrollo 
-		// Borrar despues
-		piezasNegras.inicializarNegro();
-		piezasBlancas.inicializarBlanco();
-		piezasNegras.asignarPosMundo(tablero);
-		piezasBlancas.asignarPosMundo(tablero);
-		// Fin desarrollo
 
 	// Infinite Loop
 	glutMainLoop();
@@ -90,14 +69,7 @@ void OnDraw(void) {
 	glLoadIdentity();
 
 	// Codigo del usuario comienza
-	camara.inicia();
-	tablero.dibujar();
-
-		// Desarrollo
-		// Borrar despues
-		piezasNegras.dibuja();
-		piezasBlancas.dibuja();
-		// Fin desarrollo
+	chex.dibuja();
 
 	// Codigo del usuario termina
 
@@ -115,14 +87,9 @@ void OnKeyboardDown(unsigned char key, int x_t, int y_t) {
 	glutPostRedisplay();
 }
 
-// DISCLAIMER: FUNCION REFERENCIADO DEL TABLERO DE EJEMPLO
-// QUE SE HA SUBIDO A MOODLE. 
-// COGE LAS COORDENADAS DEL RATON.
-// ESTE CODIGO ES PROPIEDAD DE PABLO SAN SEGUNDO
 void OnMouseClick(int b, int state, int x, int y) {
 	// Codigo del usuario comienza
-	Raton::MouseHandler(b, state, x, y);
-	tablero.seleccionRaton(Raton::MouseHandler(b, state, x, y));
+	chex.raton(b, state, x, y);
 
 	// Codigo del usuario termina
 
@@ -132,12 +99,7 @@ void OnMouseClick(int b, int state, int x, int y) {
 
 void OnTimer(int value) {
 	// Codigo del usuario comienza
-
-	// Desarrollo
-	// Borrar despues
-	piezasNegras.mueve();
-	piezasBlancas.mueve();
-	// Fin desarrollo
+	chex.timer();
 
 	// Codigo del usuario termina
 

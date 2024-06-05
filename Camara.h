@@ -8,6 +8,7 @@ public:
 	Vector3Ddouble arriba;
 
 public:
+	Camara() = default;
 	Camara(Vector3Ddouble nuevoOjo, Vector3Ddouble nuevoDireccion, Vector3Ddouble nuevoArriba);
-	void inicia() const;
+	void actualiza() const;
 };
