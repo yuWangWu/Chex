@@ -42,11 +42,13 @@ void MaqEstados::dibuja() {
 		break;
 
 	case MOVEBLANCO:
+		camara.actualiza();
 		tablero.dibujar();
 		tablero.dibujaPiezas();
 		break;
 
 	case MOVENEGRO:
+		camara.actualiza();
 		tablero.dibujar();
 		tablero.dibujaPiezas();
 		break;
@@ -72,23 +74,30 @@ void MaqEstados::tecla() {
 
 void MaqEstados::raton(int boton, int e, int x, int y) {
 	if (e == 0) {
+		Vector3Ddouble coordPinchado = Raton::MouseHandler(boton, estado, x, y);
 		switch (estado) {
 		case IDLEBLANCO:
-			tablero.seleccionRaton(Raton::MouseHandler(boton, estado, x, y));
-			estado = IDLENEGRO;
+			if (tablero.seleccionRaton(Raton::MouseHandler(boton, estado, x, y), true))
+				estado = MOVEBLANCO;
 			break;
 
 		case IDLENEGRO:
-			tablero.seleccionRaton(Raton::MouseHandler(boton, estado, x, y));
-			estado = IDLEBLANCO;
+			if (tablero.seleccionRaton(Raton::MouseHandler(boton, estado, x, y), false))
+				estado = MOVENEGRO;
 			break;
 
 		case MOVEBLANCO:
-			tablero.seleccionRaton(Raton::MouseHandler(boton, estado, x, y));
+			if (tablero.intercambiaPiezas(tablero.pos2baldosa(coordPinchado.x, coordPinchado.y)))
+				estado = IDLENEGRO;
+			else
+				estado = IDLEBLANCO;
 			break;
 
 		case MOVENEGRO:
-			tablero.seleccionRaton(Raton::MouseHandler(boton, estado, x, y));
+			if (tablero.intercambiaPiezas(tablero.pos2baldosa(coordPinchado.x, coordPinchado.y)))
+				estado = IDLEBLANCO;
+			else
+				estado = IDLENEGRO;
 			break;
 
 		default:

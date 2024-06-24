@@ -32,7 +32,7 @@ public:
 	void resetColores();
 	void toggleColorB(Vector2Dint _identificador, Color _color);
 
-	bool seleccionRaton(Vector3Ddouble _posicion);
+	bool seleccionRaton(Vector3Ddouble _posicion, bool _equipo);
 	Vector2Dint pos2baldosa(double x, double y) const;
 	bool derecha(double x, double y, Vector2Dfloat p1, Vector2Dfloat p2) const;
 
@@ -47,6 +47,8 @@ public:
 
 	bool hayReyBlanco();
 	bool hayReyNegro();
+
+	bool intercambiaPiezas(Vector2Dint _bDestino);
 
 	auto begin() { return tablero.begin(); };
 	auto end() { return tablero.end(); };

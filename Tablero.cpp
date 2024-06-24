@@ -200,11 +200,12 @@ void Tablero::dibujaPiezas() {
 }
 
 // Desarrollo, borrar despues
-bool Tablero::seleccionRaton(Vector3Ddouble _posicion) {
+bool Tablero::seleccionRaton(Vector3Ddouble _posicion, bool _equipo) {
 	resetColores();
+	Equipo equipo = (_equipo) ? BLANCO : NEGRO;
 
 	Vector2Dint baldosaSeleccionada = pos2baldosa(_posicion.x, _posicion.y);
-	if (baldosaSeleccionada.existe) {
+	if (baldosaSeleccionada.existe && (tablero[baldosaSeleccionada.col][baldosaSeleccionada.row].pieza->getEquipo() == equipo)) {
 		switch (tablero[baldosaSeleccionada.col][baldosaSeleccionada.row].pieza->getTipo()) {
 		case PEON:
 			caminosPeon(baldosaSeleccionada);
@@ -266,6 +267,8 @@ void Tablero::caminosPeon(Vector2Dint _bSeleccionada) {
 			if ((bCursor.existe) &&
 				(tablero[bCursor.col][bCursor.row].pieza->getTipo() == VACIO))
 				toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
+			else
+				return;
 			bCursor = tablero[bCursor.col][bCursor.row].bArriba;
 			if ((bCursor.existe) &&
 				(tablero[bCursor.col][bCursor.row].pieza->getTipo() == VACIO))
@@ -296,6 +299,8 @@ void Tablero::caminosPeon(Vector2Dint _bSeleccionada) {
 			if ((bCursor.existe) &&
 				(tablero[bCursor.col][bCursor.row].pieza->getTipo() == VACIO))
 				toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
+			else
+				return;
 			bCursor = tablero[bCursor.col][bCursor.row].bAbajo;
 			if ((bCursor.existe) &&
 				(tablero[bCursor.col][bCursor.row].pieza->getTipo() == VACIO))
@@ -765,6 +770,54 @@ bool Tablero::hayReyNegro() {
 		}
 	}
 	return false;
+}
+
+
+bool Tablero::intercambiaPiezas(Vector2Dint _bDestino) {
+	// Validez del movimiento
+	if (!((tablero[_bDestino.col][_bDestino.row].colorDisplay == rojo) || (tablero[_bDestino.col][_bDestino.row].colorDisplay == cyan))) {
+		resetColores();
+		return false;
+	}
+
+	// Obtener pieza a mover
+	Vector2Dint bOrigen{};
+	for (int col = 0; col < tablero.size(); col++) {
+		for (int row = 0; row < tablero[col].size(); row++) {
+			if (tablero[col][row].colorDisplay == verdeClaro)
+				bOrigen = tablero[col][row].identificador;
+		}
+	}
+
+	// Tipo de movimiento
+	if (tablero[_bDestino.col][_bDestino.row].colorDisplay == cyan) { // Movimiento normal
+		tablero[bOrigen.col][bOrigen.row].pieza->setPosMundoAnterior(tablero[bOrigen.col][bOrigen.row].pieza->getPosMundo());
+		
+		Pieza* pAux = tablero[bOrigen.col][bOrigen.row].pieza;
+		tablero[bOrigen.col][bOrigen.row].pieza = tablero[_bDestino.col][_bDestino.row].pieza;
+		tablero[_bDestino.col][_bDestino.row].pieza = pAux;
+
+		tablero[_bDestino.col][_bDestino.row].pieza->setPosMundo(tablero[_bDestino.col][_bDestino.row].hexagono.centro);
+		tablero[_bDestino.col][_bDestino.row].pieza->setSincronia(false);
+		tablero[_bDestino.col][_bDestino.row].pieza->mover();
+
+		resetColores();
+		return true;
+	}
+	else { // Movimiento come
+		tablero[bOrigen.col][bOrigen.row].pieza->setPosMundoAnterior(tablero[bOrigen.col][bOrigen.row].pieza->getPosMundo());
+
+		delete tablero[_bDestino.col][_bDestino.row].pieza;
+		tablero[_bDestino.col][_bDestino.row].pieza = tablero[bOrigen.col][bOrigen.row].pieza;
+		tablero[bOrigen.col][bOrigen.row].pieza = new bVacio({ -1, -1 }, true);
+
+		tablero[_bDestino.col][_bDestino.row].pieza->setPosMundo(tablero[_bDestino.col][_bDestino.row].hexagono.centro);
+		tablero[_bDestino.col][_bDestino.row].pieza->setSincronia(false);
+		tablero[_bDestino.col][_bDestino.row].pieza->mover();
+
+		resetColores();
+		return true;
+	}
 }
 
 
