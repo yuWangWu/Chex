@@ -5,20 +5,22 @@
 #include "ListaPiezas.h"
 
 class MaqEstados {
-	enum Estado { PINICIO, IDLEBLANCO, IDLENEGRO, MOVE } estado{};
+	enum Estado { PINICIO, IDLEBLANCO, IDLENEGRO, MOVEBLANCO, MOVENEGRO } estado{};
 	
 	Tablero tablero;
 
 	Camara camara;
 
-	ListaPiezas piezasBlancas, piezasNegras;
+	//ListaPiezas piezasBlancas, piezasNegras;
+
+	int index;
 
 public:
 	// Inicializador
 	MaqEstados();
 
-	void dibujaPiezas() { piezasBlancas.dibuja(); piezasNegras.dibuja(); };
-	void muevePiezas() { piezasBlancas.mueve(); piezasNegras.mueve(); };
+	//void dibujaPiezas() { piezasBlancas.dibuja(); piezasNegras.dibuja(); };
+	//void muevePiezas() { piezasBlancas.mueve(); piezasNegras.mueve(); };
 
 	void dibuja();
 	void tecla();

@@ -109,17 +109,664 @@ void Tablero::resetColores() {
 			tablero[columna][fila].colorDisplay = tablero[columna][fila].color;
 }
 
+
+void Tablero::ponPiezas() {
+	// Piezas blancas (true)
+	delete tablero[1][0].pieza;
+	tablero[1][0].pieza = new Peon(tablero[1][0].hexagono.centro, true);
+	delete tablero[2][1].pieza;
+	tablero[2][1].pieza = new Peon(tablero[2][1].hexagono.centro, true);
+	delete tablero[3][2].pieza;
+	tablero[3][2].pieza = new Peon(tablero[3][2].hexagono.centro, true);
+	delete tablero[4][3].pieza;
+	tablero[4][3].pieza = new Peon(tablero[4][3].hexagono.centro, true);
+	delete tablero[5][4].pieza;
+	tablero[5][4].pieza = new Peon(tablero[5][4].hexagono.centro, true);
+	delete tablero[6][3].pieza;
+	tablero[6][3].pieza = new Peon(tablero[6][3].hexagono.centro, true);
+	delete tablero[7][2].pieza;
+	tablero[7][2].pieza = new Peon(tablero[7][2].hexagono.centro, true);
+	delete tablero[8][1].pieza;
+	tablero[8][1].pieza = new Peon(tablero[8][1].hexagono.centro, true);
+	delete tablero[9][0].pieza;
+	tablero[9][0].pieza = new Peon(tablero[9][0].hexagono.centro, true);
+
+	delete tablero[2][0].pieza;
+	tablero[2][0].pieza = new Torre(tablero[2][0].hexagono.centro, true);
+	delete tablero[8][0].pieza;
+	tablero[8][0].pieza = new Torre(tablero[8][0].hexagono.centro, true);
+	
+	delete tablero[5][0].pieza;
+	tablero[5][0].pieza = new Alfil(tablero[5][0].hexagono.centro, true);
+	delete tablero[5][1].pieza;
+	tablero[5][1].pieza = new Alfil(tablero[5][1].hexagono.centro, true);
+	delete tablero[5][2].pieza;
+	tablero[5][2].pieza = new Alfil(tablero[5][2].hexagono.centro, true);
+	
+	delete tablero[3][0].pieza;
+	tablero[3][0].pieza = new Caballo(tablero[3][0].hexagono.centro, true, true);
+	delete tablero[7][0].pieza;
+	tablero[7][0].pieza = new Caballo(tablero[7][0].hexagono.centro, true, true);
+
+	delete tablero[4][0].pieza;
+	tablero[4][0].pieza = new Rey(tablero[4][0].hexagono.centro, true);
+	delete tablero[6][0].pieza;
+	tablero[6][0].pieza = new Reina(tablero[6][0].hexagono.centro, true);
+
+	// Piezas negras (false)
+	delete tablero[1][6].pieza;
+	delete tablero[2][6].pieza;
+	delete tablero[3][6].pieza;
+	delete tablero[4][6].pieza;
+	delete tablero[5][6].pieza;
+	delete tablero[6][6].pieza;
+	delete tablero[7][6].pieza;
+	delete tablero[8][6].pieza;
+	delete tablero[9][6].pieza;
+	for (int numero : {1, 2, 3, 4, 5, 6, 7, 8, 9})
+		tablero[numero][6].pieza = new Peon(tablero[numero][6].hexagono.centro, false);
+
+	delete tablero[2][7].pieza;
+	tablero[2][7].pieza = new Torre(tablero[2][7].hexagono.centro, false);
+	delete tablero[8][7].pieza;
+	tablero[8][7].pieza = new Torre(tablero[8][7].hexagono.centro, false);
+
+	delete tablero[5][10].pieza;
+	tablero[5][10].pieza = new Alfil(tablero[5][10].hexagono.centro, false);
+	delete tablero[5][9].pieza;
+	tablero[5][9].pieza = new Alfil(tablero[5][9].hexagono.centro, false);
+	delete tablero[5][8].pieza;
+	tablero[5][8].pieza = new Alfil(tablero[5][8].hexagono.centro, false);
+
+	delete tablero[3][8].pieza;
+	tablero[3][8].pieza = new Caballo(tablero[3][8].hexagono.centro, false, false);
+	delete tablero[7][8].pieza;
+	tablero[7][8].pieza = new Caballo(tablero[7][8].hexagono.centro, false, false);
+
+	delete tablero[4][9].pieza;
+	tablero[4][9].pieza = new Rey(tablero[4][9].hexagono.centro, false);
+	delete tablero[6][9].pieza;
+	tablero[6][9].pieza = new Reina(tablero[6][9].hexagono.centro, false);
+}
+
+void Tablero::dibujaPiezas() {
+	for (int i = 0; i < tablero.size(); i++) {
+		for (int j = 0; j < tablero[i].size(); j++) {
+			if (tablero[i][j].pieza->getTipo() != VACIO) {
+				tablero[i][j].pieza->dibuja();
+			}
+		}
+	}
+}
+
+// Desarrollo, borrar despues
 bool Tablero::seleccionRaton(Vector3Ddouble _posicion) {
 	resetColores();
 
 	Vector2Dint baldosaSeleccionada = pos2baldosa(_posicion.x, _posicion.y);
 	if (baldosaSeleccionada.existe) {
-		toggleColorB(baldosaSeleccionada);
+		switch (tablero[baldosaSeleccionada.col][baldosaSeleccionada.row].pieza->getTipo()) {
+		case PEON:
+			caminosPeon(baldosaSeleccionada);
+			break;
+		
+		case ALFIL:
+			caminosAlfil(baldosaSeleccionada);
+			break;
+
+		case TORRE:
+			caminosTorre(baldosaSeleccionada);
+			break;
+
+		case CABALLO:
+			caminosCaballo(baldosaSeleccionada);
+			break;
+
+		case REINA:
+			caminosReina(baldosaSeleccionada);
+			break;
+
+		case REY:
+			caminosRey(baldosaSeleccionada);
+			break;
+
+		default:
+			return false;
+			break;
+		}
+		toggleColorB(baldosaSeleccionada, verdeClaro);
 		return true;
 	}
 	else
 		return false;
 }
+
+void Tablero::caminosPeon(Vector2Dint _bSeleccionada) {
+	Vector2Dint bCursor;
+	if (tablero[_bSeleccionada.col][_bSeleccionada.row].pieza->getEquipo() == BLANCO) { // Blanco
+		bCursor = tablero[_bSeleccionada.col][_bSeleccionada.row].bIzqArriba;
+		if ((bCursor.existe) &&
+			(tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[_bSeleccionada.col][_bSeleccionada.row].pieza->getEquipo()) &&
+			(tablero[bCursor.col][bCursor.row].pieza->getTipo() != VACIO))
+			toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+		bCursor = tablero[_bSeleccionada.col][_bSeleccionada.row].bDerArriba;
+		if ((bCursor.existe) &&
+			(tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[_bSeleccionada.col][_bSeleccionada.row].pieza->getEquipo()) &&
+			(tablero[bCursor.col][bCursor.row].pieza->getTipo() != VACIO))
+			toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+
+		if (tablero[_bSeleccionada.col][_bSeleccionada.row].pieza->getMovido()) { // No primer movimiento
+			bCursor = tablero[_bSeleccionada.col][_bSeleccionada.row].bArriba;
+			if ((bCursor.existe) &&
+				(tablero[bCursor.col][bCursor.row].pieza->getTipo() == VACIO))
+				toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
+		}
+		else { // Primer movimiento
+			bCursor = tablero[_bSeleccionada.col][_bSeleccionada.row].bArriba;
+			if ((bCursor.existe) &&
+				(tablero[bCursor.col][bCursor.row].pieza->getTipo() == VACIO))
+				toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
+			bCursor = tablero[bCursor.col][bCursor.row].bArriba;
+			if ((bCursor.existe) &&
+				(tablero[bCursor.col][bCursor.row].pieza->getTipo() == VACIO))
+				toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
+			tablero[bCursor.col][bCursor.row].pieza->setMovido(true);
+		}
+	}
+	else { // Negro
+		bCursor = tablero[_bSeleccionada.col][_bSeleccionada.row].bIzqAbajo;
+		if ((bCursor.existe) &&
+			(tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[_bSeleccionada.col][_bSeleccionada.row].pieza->getEquipo()) &&
+			(tablero[bCursor.col][bCursor.row].pieza->getTipo() != VACIO))
+			toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+		bCursor = tablero[_bSeleccionada.col][_bSeleccionada.row].bDerAbajo;
+		if ((bCursor.existe) &&
+			(tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[_bSeleccionada.col][_bSeleccionada.row].pieza->getEquipo()) &&
+			(tablero[bCursor.col][bCursor.row].pieza->getTipo() != VACIO))
+			toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+
+		if (tablero[_bSeleccionada.col][_bSeleccionada.row].pieza->getMovido()) { // No primer movimiento
+			bCursor = tablero[_bSeleccionada.col][_bSeleccionada.row].bAbajo;
+			if ((bCursor.existe) &&
+				(tablero[bCursor.col][bCursor.row].pieza->getTipo() == VACIO))
+				toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
+		}
+		else { // Primer movimiento
+			bCursor = tablero[_bSeleccionada.col][_bSeleccionada.row].bAbajo;
+			if ((bCursor.existe) &&
+				(tablero[bCursor.col][bCursor.row].pieza->getTipo() == VACIO))
+				toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
+			bCursor = tablero[bCursor.col][bCursor.row].bAbajo;
+			if ((bCursor.existe) &&
+				(tablero[bCursor.col][bCursor.row].pieza->getTipo() == VACIO))
+				toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
+			tablero[bCursor.col][bCursor.row].pieza->setMovido(true);
+		}
+	}
+}
+
+void Tablero::caminosAlfil(Vector2Dint _bSeleccionada) {
+	Vector2Dint bCursor = tablero[_bSeleccionada.col][_bSeleccionada.row].identificador;
+	// Caminos derecha
+	do {
+		bCursor = tablero[bCursor.col][bCursor.row].bEsqIzquierda;
+		if (bCursor.existe) {
+			if (tablero[bCursor.col][bCursor.row].pieza->getTipo() == VACIO) {
+				toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
+			}
+			else {
+				if (tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[_bSeleccionada.col][_bSeleccionada.row].pieza->getEquipo())
+					toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+				break;
+			}
+		}
+		else {
+			break;
+		}
+	} while (true);
+
+	// Caminos esquina izquierda arriba
+	bCursor = tablero[_bSeleccionada.col][_bSeleccionada.row].identificador;
+	do {
+		bCursor = tablero[bCursor.col][bCursor.row].bEsqIzqArriba;
+		if (bCursor.existe) {
+			if (tablero[bCursor.col][bCursor.row].pieza->getTipo() == VACIO) {
+				toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
+			}
+			else {
+				if (tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[_bSeleccionada.col][_bSeleccionada.row].pieza->getEquipo())
+					toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+				break;
+			}
+		}
+		else {
+			break;
+		}
+	} while (true);
+
+	// Caminos esquina derecha arriba
+	bCursor = tablero[_bSeleccionada.col][_bSeleccionada.row].identificador;
+	do {
+		bCursor = tablero[bCursor.col][bCursor.row].bEsqDerArriba;
+		if (bCursor.existe) {
+			if (tablero[bCursor.col][bCursor.row].pieza->getTipo() == VACIO) {
+				toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
+			}
+			else {
+				if (tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[_bSeleccionada.col][_bSeleccionada.row].pieza->getEquipo())
+					toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+				break;
+			}
+		}
+		else {
+			break;
+		}
+	} while (true);
+
+	// Caminos derecha
+	bCursor = tablero[_bSeleccionada.col][_bSeleccionada.row].identificador;
+	do {
+		bCursor = tablero[bCursor.col][bCursor.row].bEsqDerecha;
+		if (bCursor.existe) {
+			if (tablero[bCursor.col][bCursor.row].pieza->getTipo() == VACIO) {
+				toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
+			}
+			else {
+				if (tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[_bSeleccionada.col][_bSeleccionada.row].pieza->getEquipo())
+					toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+				break;
+			}
+		}
+		else {
+			break;
+		}
+	} while (true);
+
+	// Caminos esquina derecha abajo
+	bCursor = tablero[_bSeleccionada.col][_bSeleccionada.row].identificador;
+	do {
+		bCursor = tablero[bCursor.col][bCursor.row].bEsqDerAbajo;
+		if (bCursor.existe) {
+			if (tablero[bCursor.col][bCursor.row].pieza->getTipo() == VACIO) {
+				toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
+			}
+			else {
+				if (tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[_bSeleccionada.col][_bSeleccionada.row].pieza->getEquipo())
+					toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+				break;
+			}
+		}
+		else {
+			break;
+		}
+	} while (true);
+
+	// Caminos esquina izquierda abajo
+	bCursor = tablero[_bSeleccionada.col][_bSeleccionada.row].identificador;
+	do {
+		bCursor = tablero[bCursor.col][bCursor.row].bEsqIzqAbajo;
+		if (bCursor.existe) {
+			if (tablero[bCursor.col][bCursor.row].pieza->getTipo() == VACIO) {
+				toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
+			}
+			else {
+				if (tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[_bSeleccionada.col][_bSeleccionada.row].pieza->getEquipo())
+					toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+				break;
+			}
+		}
+		else {
+			break;
+		}
+	} while (true);
+}
+
+void Tablero::caminosTorre(Vector2Dint _bSeleccionada) {
+	Vector2Dint bCursor;
+	// Caminos izquierda arriba
+	bCursor = tablero[_bSeleccionada.col][_bSeleccionada.row].identificador;
+	do {
+		bCursor = tablero[bCursor.col][bCursor.row].bIzqArriba;
+		if (bCursor.existe) {
+			if (tablero[bCursor.col][bCursor.row].pieza->getTipo() == VACIO) {
+				toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
+			}
+			else {
+				if (tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[_bSeleccionada.col][_bSeleccionada.row].pieza->getEquipo())
+					toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+				break;
+			}
+		}
+		else {
+			break;
+		}
+	} while (true);
+
+	// Caminos arriba
+	bCursor = tablero[_bSeleccionada.col][_bSeleccionada.row].identificador;
+	do {
+		bCursor = tablero[bCursor.col][bCursor.row].bArriba;
+		if (bCursor.existe) {
+			if (tablero[bCursor.col][bCursor.row].pieza->getTipo() == VACIO) {
+				toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
+			}
+			else {
+				if (tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[_bSeleccionada.col][_bSeleccionada.row].pieza->getEquipo())
+					toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+				break;
+			}
+		}
+		else {
+			break;
+		}
+	} while (true);
+
+	// Caminos derecha arriba
+	bCursor = tablero[_bSeleccionada.col][_bSeleccionada.row].identificador;
+	do {
+		bCursor = tablero[bCursor.col][bCursor.row].bDerArriba;
+		if (bCursor.existe) {
+			if (tablero[bCursor.col][bCursor.row].pieza->getTipo() == VACIO) {
+				toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
+			}
+			else {
+				if (tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[_bSeleccionada.col][_bSeleccionada.row].pieza->getEquipo())
+					toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+				break;
+			}
+		}
+		else {
+			break;
+		}
+	} while (true);
+
+	// Caminos derrecha abajo
+	bCursor = tablero[_bSeleccionada.col][_bSeleccionada.row].identificador;
+	do {
+		bCursor = tablero[bCursor.col][bCursor.row].bDerAbajo;
+		if (bCursor.existe) {
+			if (tablero[bCursor.col][bCursor.row].pieza->getTipo() == VACIO) {
+				toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
+			}
+			else {
+				if (tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[_bSeleccionada.col][_bSeleccionada.row].pieza->getEquipo())
+					toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+				break;
+			}
+		}
+		else {
+			break;
+		}
+	} while (true);
+
+	// Caminos abajo
+	bCursor = tablero[_bSeleccionada.col][_bSeleccionada.row].identificador;
+	do {
+		bCursor = tablero[bCursor.col][bCursor.row].bAbajo;
+		if (bCursor.existe) {
+			if (tablero[bCursor.col][bCursor.row].pieza->getTipo() == VACIO) {
+				toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
+			}
+			else {
+				if (tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[_bSeleccionada.col][_bSeleccionada.row].pieza->getEquipo())
+					toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+				break;
+			}
+		}
+		else {
+			break;
+		}
+	} while (true);
+
+	// Caminos izquierda abajo
+	bCursor = tablero[_bSeleccionada.col][_bSeleccionada.row].identificador;
+	do {
+		bCursor = tablero[bCursor.col][bCursor.row].bIzqAbajo;
+		if (bCursor.existe) {
+			if (tablero[bCursor.col][bCursor.row].pieza->getTipo() == VACIO) {
+				toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
+			}
+			else {
+				if (tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[_bSeleccionada.col][_bSeleccionada.row].pieza->getEquipo())
+					toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+				break;
+			}
+		}
+		else {
+			break;
+		}
+	} while (true);
+}
+
+void Tablero::caminosCaballo(Vector2Dint _bSeleccionada) {
+	Vector2Dint bCursor;
+	// Caminos esquina izquierda
+	bCursor = tablero[_bSeleccionada.col][_bSeleccionada.row].bCaballoIzqAbajo;
+	if (bCursor.existe) {
+		if (tablero[bCursor.col][bCursor.row].pieza->getTipo() == VACIO)
+			toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
+		else
+			if (tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[_bSeleccionada.col][_bSeleccionada.row].pieza->getEquipo())
+				toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+	}
+	bCursor = tablero[_bSeleccionada.col][_bSeleccionada.row].bCaballoIzqArriba;
+	if (bCursor.existe) {
+		if (tablero[bCursor.col][bCursor.row].pieza->getTipo() == VACIO)
+			toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
+		else
+			if (tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[_bSeleccionada.col][_bSeleccionada.row].pieza->getEquipo())
+				toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+	}
+
+	// Caminos esquina izquierda arriba
+	bCursor = tablero[_bSeleccionada.col][_bSeleccionada.row].bCaballoEsqIzqArrAbajo;
+	if (bCursor.existe) {
+		if (tablero[bCursor.col][bCursor.row].pieza->getTipo() == VACIO)
+			toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
+		else
+			if (tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[_bSeleccionada.col][_bSeleccionada.row].pieza->getEquipo())
+				toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+	}
+	bCursor = tablero[_bSeleccionada.col][_bSeleccionada.row].bCaballoEsqIzqArrArriba;
+	if (bCursor.existe) {
+		if (tablero[bCursor.col][bCursor.row].pieza->getTipo() == VACIO)
+			toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
+		else
+			if (tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[_bSeleccionada.col][_bSeleccionada.row].pieza->getEquipo())
+				toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+	}
+
+	// Caminos esquina derecha arriba
+	bCursor = tablero[_bSeleccionada.col][_bSeleccionada.row].bCaballoEsqDerArrArriba;
+	if (bCursor.existe) {
+		if (tablero[bCursor.col][bCursor.row].pieza->getTipo() == VACIO)
+			toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
+		else
+			if (tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[_bSeleccionada.col][_bSeleccionada.row].pieza->getEquipo())
+				toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+	}	
+	bCursor = tablero[_bSeleccionada.col][_bSeleccionada.row].bCaballoEsqDerArrAbajo;
+	if (bCursor.existe) {
+		if (tablero[bCursor.col][bCursor.row].pieza->getTipo() == VACIO)
+			toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
+		else
+			if (tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[_bSeleccionada.col][_bSeleccionada.row].pieza->getEquipo())
+				toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+	}
+
+	// Caminos esquina derecha
+	bCursor = tablero[_bSeleccionada.col][_bSeleccionada.row].bCaballoDerArriba;
+	if (bCursor.existe) {
+		if (tablero[bCursor.col][bCursor.row].pieza->getTipo() == VACIO)
+			toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
+		else
+			if (tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[_bSeleccionada.col][_bSeleccionada.row].pieza->getEquipo())
+				toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+	}
+	bCursor = tablero[_bSeleccionada.col][_bSeleccionada.row].bCaballoDerAbajo;
+	if (bCursor.existe) {
+		if (tablero[bCursor.col][bCursor.row].pieza->getTipo() == VACIO)
+			toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
+		else
+			if (tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[_bSeleccionada.col][_bSeleccionada.row].pieza->getEquipo())
+				toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+	}
+
+	// Caminos esquina derecha abajo
+	bCursor = tablero[_bSeleccionada.col][_bSeleccionada.row].bCaballoEsqDerAbjArriba;
+	if (bCursor.existe) {
+		if (tablero[bCursor.col][bCursor.row].pieza->getTipo() == VACIO)
+			toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
+		else
+			if (tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[_bSeleccionada.col][_bSeleccionada.row].pieza->getEquipo())
+				toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+	}
+	bCursor = tablero[_bSeleccionada.col][_bSeleccionada.row].bCaballoEsqDerAbjAbajo;
+	if (bCursor.existe) {
+		if (tablero[bCursor.col][bCursor.row].pieza->getTipo() == VACIO)
+			toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
+		else
+			if (tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[_bSeleccionada.col][_bSeleccionada.row].pieza->getEquipo())
+				toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+	}
+
+	// Caminos esquina izquierda abajo
+	bCursor = tablero[_bSeleccionada.col][_bSeleccionada.row].bCaballoEsqIzqAbjAbajo;
+	if (bCursor.existe) {
+		if (tablero[bCursor.col][bCursor.row].pieza->getTipo() == VACIO)
+			toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
+		else
+			if (tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[_bSeleccionada.col][_bSeleccionada.row].pieza->getEquipo())
+				toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+	}
+	bCursor = tablero[_bSeleccionada.col][_bSeleccionada.row].bCaballoEsqIzqAbjArriba;
+	if (bCursor.existe) {
+		if (tablero[bCursor.col][bCursor.row].pieza->getTipo() == VACIO)
+			toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
+		else
+			if (tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[_bSeleccionada.col][_bSeleccionada.row].pieza->getEquipo())
+				toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+	}
+}
+
+void Tablero::caminosReina(Vector2Dint _bSeleccionada) {
+	caminosAlfil(_bSeleccionada);
+	caminosTorre(_bSeleccionada);
+}
+
+void Tablero::caminosRey(Vector2Dint b) {
+	Vector2Dint bCursor;
+	bCursor = tablero[b.col][b.row].bEsqIzquierda;
+	if (bCursor.existe) {
+		if (tablero[bCursor.col][bCursor.row].pieza->getTipo() == VACIO)
+			toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
+		else
+			if (tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[b.col][b.row].pieza->getEquipo())
+				toggleColorB(tablero[bCursor.col][bCursor.col].identificador, rojo);
+	}
+	bCursor = tablero[b.col][b.row].bIzqArriba;
+	if (bCursor.existe) {
+		if (tablero[bCursor.col][bCursor.row].pieza->getTipo() == VACIO)
+			toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
+		else
+			if (tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[b.col][b.row].pieza->getEquipo())
+				toggleColorB(tablero[bCursor.col][bCursor.col].identificador, rojo);
+	}
+	bCursor = tablero[b.col][b.row].bEsqIzqArriba;
+	if (bCursor.existe) {
+		if (tablero[bCursor.col][bCursor.row].pieza->getTipo() == VACIO)
+			toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
+		else
+			if (tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[b.col][b.row].pieza->getEquipo())
+				toggleColorB(tablero[bCursor.col][bCursor.col].identificador, rojo);
+	}
+	bCursor = tablero[b.col][b.row].bArriba;
+	if (bCursor.existe) {
+		if (tablero[bCursor.col][bCursor.row].pieza->getTipo() == VACIO)
+			toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
+		else
+			if (tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[b.col][b.row].pieza->getEquipo())
+				toggleColorB(tablero[bCursor.col][bCursor.col].identificador, rojo);
+	}
+	bCursor = tablero[b.col][b.row].bEsqDerArriba;
+	if (bCursor.existe) {
+		if (tablero[bCursor.col][bCursor.row].pieza->getTipo() == VACIO)
+			toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
+		else
+			if (tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[b.col][b.row].pieza->getEquipo())
+				toggleColorB(tablero[bCursor.col][bCursor.col].identificador, rojo);
+	}
+	bCursor = tablero[b.col][b.row].bEsqDerecha;
+	if (bCursor.existe) {
+		if (tablero[bCursor.col][bCursor.row].pieza->getTipo() == VACIO)
+			toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
+		else
+			if (tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[b.col][b.row].pieza->getEquipo())
+				toggleColorB(tablero[bCursor.col][bCursor.col].identificador, rojo);
+	}
+	bCursor = tablero[b.col][b.row].bDerAbajo;
+	if (bCursor.existe) {
+		if (tablero[bCursor.col][bCursor.row].pieza->getTipo() == VACIO)
+			toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
+		else
+			if (tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[b.col][b.row].pieza->getEquipo())
+				toggleColorB(tablero[bCursor.col][bCursor.col].identificador, rojo);
+	}
+	bCursor = tablero[b.col][b.row].bEsqDerAbajo;
+	if (bCursor.existe) {
+		if (tablero[bCursor.col][bCursor.row].pieza->getTipo() == VACIO)
+			toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
+		else
+			if (tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[b.col][b.row].pieza->getEquipo())
+				toggleColorB(tablero[bCursor.col][bCursor.col].identificador, rojo);
+	}
+	bCursor = tablero[b.col][b.row].bAbajo;
+	if (bCursor.existe) {
+		if (tablero[bCursor.col][bCursor.row].pieza->getTipo() == VACIO)
+			toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
+		else
+			if (tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[b.col][b.row].pieza->getEquipo())
+				toggleColorB(tablero[bCursor.col][bCursor.col].identificador, rojo);
+	}
+	bCursor = tablero[b.col][b.row].bEsqIzqAbajo;
+	if (bCursor.existe) {
+		if (tablero[bCursor.col][bCursor.row].pieza->getTipo() == VACIO)
+			toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
+		else
+			if (tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[b.col][b.row].pieza->getEquipo())
+				toggleColorB(tablero[bCursor.col][bCursor.col].identificador, rojo);
+	}
+	bCursor = tablero[b.col][b.row].bIzqAbajo;
+	if (bCursor.existe) {
+		if (tablero[bCursor.col][bCursor.row].pieza->getTipo() == VACIO)
+			toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
+		else
+			if (tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[b.col][b.row].pieza->getEquipo())
+				toggleColorB(tablero[bCursor.col][bCursor.col].identificador, rojo);
+	}
+}
+
+
+bool Tablero::hayReyBlanco() {
+	for (int col = 0; col < tablero.size(); col++) {
+		for (int row = 0; row < tablero[col].size(); row++) {
+			if ((tablero[col][row].pieza->getTipo() == REY) && (tablero[col][row].pieza->getEquipo() == BLANCO))
+				return true;
+		}
+	}
+	return false;
+}
+
+bool Tablero::hayReyNegro() {
+	for (int col = 0; col < tablero.size(); col++) {
+		for (int row = 0; row < tablero[col].size(); row++) {
+			if ((tablero[col][row].pieza->getTipo() == REY) && (tablero[col][row].pieza->getEquipo() == NEGRO))
+				return true;
+		}
+	}
+	return false;
+}
+
 
 Vector2Dint Tablero::pos2baldosa(double x, double y) const {
 	for (int columna = 0; columna < tablero.size(); columna++) {
@@ -146,8 +793,8 @@ bool Tablero::derecha(double x, double y, Vector2Dfloat p1, Vector2Dfloat p2) co
 }
 
 
-void Tablero::toggleColorB(Vector2Dint _identificador) {
-	tablero[_identificador.col][_identificador.row].colorDisplay = rojo;
+void Tablero::toggleColorB(Vector2Dint _identificador, Color _color) {
+	tablero[_identificador.col][_identificador.row].colorDisplay = _color;
 }
 
 

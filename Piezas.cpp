@@ -3,9 +3,17 @@
 #include "freeglut.h"
 
 // Funciones comunes 
-Pieza::Pieza(Vector2Dint _pos, Color _color) {
-	posTablero = _pos;
-	color = _color;
+Pieza::Pieza(Vector2Dfloat _pos, bool _equipo) {
+	posMundo = _pos;
+	if (_equipo) {
+		equipo = BLANCO;
+		color = { 200, 200, 200 };
+	}
+	else {
+		equipo = NEGRO;
+		color = { 20, 20, 20 };
+
+	}
 }
 
 void Pieza::cargarModelo(const char* modelo) {
@@ -35,22 +43,30 @@ void Pieza::mover() {
 }
 
 // Inicializaciones
-Peon::Peon(Vector2Dint _pos, Color _color) : Pieza(_pos, _color) {
+bVacio::bVacio(Vector2Dfloat _pos, bool _equipo) : Pieza(_pos, _equipo) {
+	tipo = VACIO;
+}
+
+Peon::Peon(Vector2Dfloat _pos, bool _equipo) : Pieza(_pos, _equipo) {
+	tipo = PEON;
 	const char* modelo = "gameData/Peon.stl";
 	cargarModelo(modelo);
 }
 
-Torre::Torre(Vector2Dint _pos, Color _color) : Pieza(_pos, _color) {
+Torre::Torre(Vector2Dfloat _pos, bool _equipo) : Pieza(_pos, _equipo) {
+	tipo = TORRE;
 	const char* modelo = "gameData/Torre.stl";
 	cargarModelo(modelo);
 }
 
-Alfil::Alfil(Vector2Dint _pos, Color _color) : Pieza(_pos, _color) {
+Alfil::Alfil(Vector2Dfloat _pos, bool _equipo) : Pieza(_pos, _equipo) {
+	tipo = ALFIL;
 	const char* modelo = "gameData/Alfil.stl";
 	cargarModelo(modelo);
 }
 
-Caballo::Caballo(Vector2Dint _pos, Color _color, bool equipo) : Pieza(_pos, _color) {
+Caballo::Caballo(Vector2Dfloat _pos, bool _equipo, bool equipo) : Pieza(_pos, _equipo) {
+	tipo = CABALLO;
 	if (equipo) {
 		const char* modelo = "gameData/Caballo.stl";
 		cargarModelo(modelo);
@@ -61,14 +77,14 @@ Caballo::Caballo(Vector2Dint _pos, Color _color, bool equipo) : Pieza(_pos, _col
 	}
 }
 
-Reina::Reina(Vector2Dint _pos, Color _color) : Pieza(_pos, _color) {
+Reina::Reina(Vector2Dfloat _pos, bool _equipo) : Pieza(_pos, _equipo) {
+	tipo = REINA;
 	const char* modelo = "gameData/Reina.stl";
 	cargarModelo(modelo);
 }
 
-Rey::Rey(Vector2Dint _pos, Color _color) : Pieza(_pos, _color) {
+Rey::Rey(Vector2Dfloat _pos, bool _equipo) : Pieza(_pos, _equipo) {
+	tipo = REY;
 	const char* modelo = "gameData/Rey.stl";
 	cargarModelo(modelo);
 }
-
-// Busca caminos 

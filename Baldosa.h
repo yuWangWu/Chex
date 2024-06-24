@@ -5,12 +5,14 @@
 #include "VectoresUtiles.h"
 #include "Color.h"
 #include "Hexagono.h"
+#include "Piezas.h"
 
 class Baldosa {
 public:
 	Hexagono hexagono;
 	Vector2Dint identificador;
 	Color color, colorDisplay;
+	Pieza* pieza = new bVacio({-1, -1}, true);
 
 	// Posicion baldosas colindantes
 	Vector2Dint bArriba, bAbajo, bIzqArriba, bIzqAbajo, bDerArriba, bDerAbajo;								// Tocan lados

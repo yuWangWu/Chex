@@ -8,11 +8,13 @@ MaqEstados::MaqEstados() {
 	camara.arriba = { 0, 0, 1 };
 	camara.actualiza();
 
-	piezasBlancas.inicializarBlanco();
-	piezasNegras.inicializarNegro();
+	tablero.ponPiezas();
 
-	piezasBlancas.asignarPosMundo(tablero);
-	piezasNegras.asignarPosMundo(tablero);
+	//piezasBlancas.inicializarBlanco();
+	//piezasNegras.inicializarNegro();
+
+	//piezasBlancas.asignarPosMundo(tablero);
+	//piezasNegras.asignarPosMundo(tablero);
 }
 
 void MaqEstados::dibuja() {
@@ -25,7 +27,8 @@ void MaqEstados::dibuja() {
 		//camara.ojo = { 0, -100, 100 };
 		camara.actualiza();
 		tablero.dibujar();
-		dibujaPiezas();
+		tablero.dibujaPiezas();
+		//dibujaPiezas();
 
 		break;
 
@@ -33,12 +36,19 @@ void MaqEstados::dibuja() {
 		//camara.ojo = { 0, 100, 100 };
 		camara.actualiza();
 		tablero.dibujar();
-		dibujaPiezas();
+		tablero.dibujaPiezas();
+		//dibujaPiezas();
 
 		break;
 
-	case MOVE:
+	case MOVEBLANCO:
 		tablero.dibujar();
+		tablero.dibujaPiezas();
+		break;
+
+	case MOVENEGRO:
+		tablero.dibujar();
+		tablero.dibujaPiezas();
 		break;
 
 	default:
@@ -50,7 +60,8 @@ void MaqEstados::tecla() {
 	switch (estado) {
 	case IDLEBLANCO:
 	case IDLENEGRO:
-	case MOVE:
+	case MOVEBLANCO:
+	case MOVENEGRO:
 		
 		break;
 
@@ -72,7 +83,11 @@ void MaqEstados::raton(int boton, int e, int x, int y) {
 			estado = IDLEBLANCO;
 			break;
 
-		case MOVE:
+		case MOVEBLANCO:
+			tablero.seleccionRaton(Raton::MouseHandler(boton, estado, x, y));
+			break;
+
+		case MOVENEGRO:
 			tablero.seleccionRaton(Raton::MouseHandler(boton, estado, x, y));
 			break;
 
@@ -86,8 +101,9 @@ void MaqEstados::timer() {
 	switch (estado) {
 	case IDLEBLANCO:
 	case IDLENEGRO:
-	case MOVE:
-		muevePiezas();
+	case MOVEBLANCO:
+	case MOVENEGRO:
+		//muevePiezas();
 		break;
 
 	default:
