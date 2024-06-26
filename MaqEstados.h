@@ -21,7 +21,7 @@ public:
 	//void muevePiezas() { piezasBlancas.mueve(); piezasNegras.mueve(); };
 
 	void dibuja();
-	void tecla();
+	void tecla(unsigned char tecla);
 	void raton(int boton, int estado, int x, int y);
 	void timer();
 };

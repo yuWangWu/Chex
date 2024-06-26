@@ -12,7 +12,7 @@ public:
 	Hexagono hexagono;
 	Vector2Dint identificador;
 	Color color, colorDisplay;
-	Pieza* pieza = new bVacio({-1, -1}, true);
+	Pieza* pieza;
 
 	// Posicion baldosas colindantes
 	Vector2Dint bArriba, bAbajo, bIzqArriba, bIzqAbajo, bDerArriba, bDerAbajo;								// Tocan lados

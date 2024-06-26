@@ -5,6 +5,7 @@
 #include "Baldosa.h"
 #include "Esfera.h"
 #include "Piezas.h"
+#include "ETSIDI.h"
 
 enum EstadoRey { NADA, JAQUE, JAQUEMATE };
 
@@ -49,11 +50,14 @@ public:
 	void caminosRey(Vector2Dint _bSeleccionada);
 	void caminosReyCheck(Vector2Dint _bSeleccionada);
 
+	bool coloreaMovimientoBaldosa(Vector2Dint _bSeleccionada, Vector2Dint _bCursor);
+	bool coloreaMovimientoBaldosaCheck(Vector2Dint _bSeleccionada, Vector2Dint _bCursor);
+
 	EstadoRey checkJaque(bool equipo);
 
-	bool intercambiaPiezas(Vector2Dint _bDestino);
+	bool intercambiaPiezas(Vector3Ddouble _identificador);
 
-	void borrarPiezas() {
+	void quitaPiezas() {
 		for (int col = 0; col < tablero.size(); col++) {
 			for (int row = 0; row < tablero[col].size(); row++) {
 				delete tablero[col][row].pieza;
@@ -61,7 +65,7 @@ public:
 		}
 	}
 	void borrarTablero() {
-		borrarPiezas();
+		quitaPiezas();
 		for (int col = 0; col < tablero.size(); col++) {
 			tablero[col].clear();
 		}
