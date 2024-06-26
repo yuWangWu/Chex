@@ -10,4 +10,7 @@ public:
 			return true;
 		return false;
 	}
+	bool operator!=(Color c) {
+		return !operator==(c);
+	}
 };

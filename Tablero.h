@@ -6,6 +6,8 @@
 #include "Esfera.h"
 #include "Piezas.h"
 
+enum EstadoRey { NADA, JAQUE, JAQUEMATE };
+
 class Tablero {
 public:
 	std::vector<std::vector<Baldosa>> tablero{
@@ -30,6 +32,7 @@ public:
 	void dibujaPiezas();
 
 	void resetColores();
+	void resetColoresMovimiento();
 	void toggleColorB(Vector2Dint _identificador, Color _color);
 
 	bool seleccionRaton(Vector3Ddouble _posicion, bool _equipo);
@@ -44,11 +47,26 @@ public:
 	void caminosCaballo(Vector2Dint _bSeleccionada);
 	void caminosReina(Vector2Dint _bSeleccionada);
 	void caminosRey(Vector2Dint _bSeleccionada);
+	void caminosReyCheck(Vector2Dint _bSeleccionada);
 
-	bool hayReyBlanco();
-	bool hayReyNegro();
+	EstadoRey checkJaque(bool equipo);
 
 	bool intercambiaPiezas(Vector2Dint _bDestino);
+
+	void borrarPiezas() {
+		for (int col = 0; col < tablero.size(); col++) {
+			for (int row = 0; row < tablero[col].size(); row++) {
+				delete tablero[col][row].pieza;
+			}
+		}
+	}
+	void borrarTablero() {
+		borrarPiezas();
+		for (int col = 0; col < tablero.size(); col++) {
+			tablero[col].clear();
+		}
+		tablero.clear();
+	}
 
 	auto begin() { return tablero.begin(); };
 	auto end() { return tablero.end(); };

@@ -109,6 +109,13 @@ void Tablero::resetColores() {
 			tablero[columna][fila].colorDisplay = tablero[columna][fila].color;
 }
 
+void Tablero::resetColoresMovimiento() {
+	for (int columna = 0; columna < tablero.size(); columna++)
+		for (int fila = 0; fila < tablero[columna].size(); fila++)
+			if ((tablero[columna][fila].colorDisplay != rojo) && (tablero[columna][fila].colorDisplay != amarillo))
+				tablero[columna][fila].colorDisplay = tablero[columna][fila].color;
+}
+
 
 void Tablero::ponPiezas() {
 	// Piezas blancas (true)
@@ -256,6 +263,20 @@ void Tablero::caminosPeon(Vector2Dint _bSeleccionada) {
 			(tablero[bCursor.col][bCursor.row].pieza->getTipo() != VACIO))
 			toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
 
+		// Comprobar en pasant
+		bCursor = tablero[_bSeleccionada.col][_bSeleccionada.row].bIzqAbajo;
+		if ((bCursor.existe) &&
+			(tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[_bSeleccionada.col][_bSeleccionada.row].pieza->getEquipo()) &&
+			(tablero[bCursor.col][bCursor.row].pieza->getTipo() == PEON) &&
+			(tablero[bCursor.col][bCursor.row].pieza->getMovido1vez()))
+			toggleColorB(tablero[_bSeleccionada.col][_bSeleccionada.row].bIzqArriba, rojo);
+		bCursor = tablero[_bSeleccionada.col][_bSeleccionada.row].bDerAbajo;
+		if ((bCursor.existe) &&
+			(tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[_bSeleccionada.col][_bSeleccionada.row].pieza->getEquipo()) &&
+			(tablero[bCursor.col][bCursor.row].pieza->getTipo() == PEON) &&
+			(tablero[bCursor.col][bCursor.row].pieza->getMovido1vez()))
+			toggleColorB(tablero[_bSeleccionada.col][_bSeleccionada.row].bDerArriba, rojo);
+
 		if (tablero[_bSeleccionada.col][_bSeleccionada.row].pieza->getMovido()) { // No primer movimiento
 			bCursor = tablero[_bSeleccionada.col][_bSeleccionada.row].bArriba;
 			if ((bCursor.existe) &&
@@ -273,7 +294,6 @@ void Tablero::caminosPeon(Vector2Dint _bSeleccionada) {
 			if ((bCursor.existe) &&
 				(tablero[bCursor.col][bCursor.row].pieza->getTipo() == VACIO))
 				toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
-			tablero[bCursor.col][bCursor.row].pieza->setMovido(true);
 		}
 	}
 	else { // Negro
@@ -287,6 +307,20 @@ void Tablero::caminosPeon(Vector2Dint _bSeleccionada) {
 			(tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[_bSeleccionada.col][_bSeleccionada.row].pieza->getEquipo()) &&
 			(tablero[bCursor.col][bCursor.row].pieza->getTipo() != VACIO))
 			toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+
+		// Comprobar en pasant
+		bCursor = tablero[_bSeleccionada.col][_bSeleccionada.row].bIzqArriba;
+		if ((bCursor.existe) &&
+			(tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[_bSeleccionada.col][_bSeleccionada.row].pieza->getEquipo()) &&
+			(tablero[bCursor.col][bCursor.row].pieza->getTipo() == PEON) &&
+			(tablero[bCursor.col][bCursor.row].pieza->getMovido1vez()))
+			toggleColorB(tablero[_bSeleccionada.col][_bSeleccionada.row].bIzqAbajo, rojo);
+		bCursor = tablero[_bSeleccionada.col][_bSeleccionada.row].bDerArriba;
+		if ((bCursor.existe) &&
+			(tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[_bSeleccionada.col][_bSeleccionada.row].pieza->getEquipo()) &&
+			(tablero[bCursor.col][bCursor.row].pieza->getTipo() == PEON) &&
+			(tablero[bCursor.col][bCursor.row].pieza->getMovido1vez()))
+			toggleColorB(tablero[_bSeleccionada.col][_bSeleccionada.row].bDerAbajo, rojo);
 
 		if (tablero[_bSeleccionada.col][_bSeleccionada.row].pieza->getMovido()) { // No primer movimiento
 			bCursor = tablero[_bSeleccionada.col][_bSeleccionada.row].bAbajo;
@@ -305,7 +339,6 @@ void Tablero::caminosPeon(Vector2Dint _bSeleccionada) {
 			if ((bCursor.existe) &&
 				(tablero[bCursor.col][bCursor.row].pieza->getTipo() == VACIO))
 				toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
-			tablero[bCursor.col][bCursor.row].pieza->setMovido(true);
 		}
 	}
 }
@@ -751,25 +784,203 @@ void Tablero::caminosRey(Vector2Dint b) {
 	}
 }
 
-
-bool Tablero::hayReyBlanco() {
-	for (int col = 0; col < tablero.size(); col++) {
-		for (int row = 0; row < tablero[col].size(); row++) {
-			if ((tablero[col][row].pieza->getTipo() == REY) && (tablero[col][row].pieza->getEquipo() == BLANCO))
-				return true;
-		}
+void Tablero::caminosReyCheck(Vector2Dint b) {
+	Vector2Dint bCursor;
+	toggleColorB(tablero[b.col][b.row].identificador, amarillo);
+	bCursor = tablero[b.col][b.row].bEsqIzquierda;
+	if (bCursor.existe) {
+		if ((tablero[bCursor.col][bCursor.row].pieza->getTipo() == VACIO) ||
+			(tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[b.col][b.row].pieza->getEquipo()))
+			toggleColorB(tablero[bCursor.col][bCursor.row].identificador, amarillo);
 	}
-	return false;
+	bCursor = tablero[b.col][b.row].bIzqArriba;
+	if (bCursor.existe) {
+		if ((tablero[bCursor.col][bCursor.row].pieza->getTipo() == VACIO) ||
+			(tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[b.col][b.row].pieza->getEquipo()))
+			toggleColorB(tablero[bCursor.col][bCursor.row].identificador, amarillo);
+	}
+	bCursor = tablero[b.col][b.row].bEsqIzqArriba;
+	if (bCursor.existe) {
+		if ((tablero[bCursor.col][bCursor.row].pieza->getTipo() == VACIO) ||
+			(tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[b.col][b.row].pieza->getEquipo()))
+			toggleColorB(tablero[bCursor.col][bCursor.row].identificador, amarillo);
+	}
+	bCursor = tablero[b.col][b.row].bArriba;
+	if (bCursor.existe) {
+		if ((tablero[bCursor.col][bCursor.row].pieza->getTipo() == VACIO) ||
+			(tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[b.col][b.row].pieza->getEquipo()))
+			toggleColorB(tablero[bCursor.col][bCursor.row].identificador, amarillo);
+	}
+	bCursor = tablero[b.col][b.row].bEsqDerArriba;
+	if (bCursor.existe) {
+		if ((tablero[bCursor.col][bCursor.row].pieza->getTipo() == VACIO) ||
+			(tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[b.col][b.row].pieza->getEquipo()))
+			toggleColorB(tablero[bCursor.col][bCursor.row].identificador, amarillo);
+	}
+	bCursor = tablero[b.col][b.row].bEsqDerecha;
+	if (bCursor.existe) {
+		if ((tablero[bCursor.col][bCursor.row].pieza->getTipo() == VACIO) ||
+			(tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[b.col][b.row].pieza->getEquipo()))
+			toggleColorB(tablero[bCursor.col][bCursor.row].identificador, amarillo);
+	}
+	bCursor = tablero[b.col][b.row].bDerAbajo;
+	if (bCursor.existe) {
+		if ((tablero[bCursor.col][bCursor.row].pieza->getTipo() == VACIO) ||
+			(tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[b.col][b.row].pieza->getEquipo()))
+			toggleColorB(tablero[bCursor.col][bCursor.row].identificador, amarillo);
+	}
+	bCursor = tablero[b.col][b.row].bEsqDerAbajo;
+	if (bCursor.existe) {
+		if ((tablero[bCursor.col][bCursor.row].pieza->getTipo() == VACIO) ||
+			(tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[b.col][b.row].pieza->getEquipo()))
+			toggleColorB(tablero[bCursor.col][bCursor.row].identificador, amarillo);
+	}
+	bCursor = tablero[b.col][b.row].bAbajo;
+	if (bCursor.existe) {
+		if ((tablero[bCursor.col][bCursor.row].pieza->getTipo() == VACIO) ||
+			(tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[b.col][b.row].pieza->getEquipo()))
+			toggleColorB(tablero[bCursor.col][bCursor.row].identificador, amarillo);
+	}
+	bCursor = tablero[b.col][b.row].bEsqIzqAbajo;
+	if (bCursor.existe) {
+		if ((tablero[bCursor.col][bCursor.row].pieza->getTipo() == VACIO) ||
+			(tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[b.col][b.row].pieza->getEquipo()))
+			toggleColorB(tablero[bCursor.col][bCursor.row].identificador, amarillo);
+	}
+	bCursor = tablero[b.col][b.row].bIzqAbajo;
+	if (bCursor.existe) {
+		if ((tablero[bCursor.col][bCursor.row].pieza->getTipo() == VACIO) ||
+			(tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[b.col][b.row].pieza->getEquipo()))
+			toggleColorB(tablero[bCursor.col][bCursor.row].identificador, amarillo);
+	}
 }
 
-bool Tablero::hayReyNegro() {
+
+EstadoRey Tablero::checkJaque(bool _equipo) {
+	EstadoRey estado{}; // Inicializado a nada
+	Vector2Dint posRey{};
+	
 	for (int col = 0; col < tablero.size(); col++) {
 		for (int row = 0; row < tablero[col].size(); row++) {
-			if ((tablero[col][row].pieza->getTipo() == REY) && (tablero[col][row].pieza->getEquipo() == NEGRO))
-				return true;
+			if (tablero[col][row].pieza->getTipo() == REY) {
+				if ((tablero[col][row].pieza->getEquipo() == NEGRO) && _equipo) {
+					posRey = { true, col, row };
+					break;
+				}
+				if ((tablero[col][row].pieza->getEquipo() == BLANCO) && !_equipo) {
+					posRey = { true, col, row };
+					break;	
+				}
+			}
 		}
 	}
-	return false;
+
+	// Colorea de amarillo los posibles movimientos del rey
+	caminosReyCheck(tablero[posRey.col][posRey.row].identificador);
+
+	if (_equipo) { // Chequea si el equipo negro esta en jaque
+		for (int col = 0; col < tablero.size(); col++) {
+			for (int row = 0; row < tablero[col].size(); row++) {
+				if (tablero[col][row].pieza->getEquipo() == BLANCO) {
+					switch (tablero[col][row].pieza->getTipo()) {
+					case PEON:
+						caminosPeon(tablero[col][row].identificador);
+						resetColoresMovimiento();
+						break;
+
+					case ALFIL:
+						caminosAlfil(tablero[col][row].identificador);
+						resetColoresMovimiento();
+						break;
+
+					case TORRE:
+						caminosTorre(tablero[col][row].identificador);
+						resetColoresMovimiento();
+						break;
+
+					case CABALLO:
+						caminosCaballo(tablero[col][row].identificador);
+						resetColoresMovimiento();
+						break;
+
+					case REINA:
+						caminosReina(tablero[col][row].identificador);
+						resetColoresMovimiento();
+						break;
+
+					case REY:
+						caminosRey(tablero[col][row].identificador);
+						resetColoresMovimiento();
+						break;
+
+					default:
+						break;
+					}
+				}
+			}
+		}
+	}
+	else { // Chequea si el equipo blanco esta en jaque
+		for (int col = 0; col < tablero.size(); col++) {
+			for (int row = 0; row < tablero[col].size(); row++) {
+				if (tablero[col][row].pieza->getEquipo() == NEGRO) {
+					switch (tablero[col][row].pieza->getTipo()) {
+					case PEON:
+						caminosPeon(tablero[col][row].identificador);
+						resetColoresMovimiento();
+						break;
+
+					case ALFIL:
+						caminosAlfil(tablero[col][row].identificador);
+						resetColoresMovimiento();
+						break;
+
+					case TORRE:
+						caminosTorre(tablero[col][row].identificador);
+						resetColoresMovimiento();
+						break;
+
+					case CABALLO:
+						caminosCaballo(tablero[col][row].identificador);
+						resetColoresMovimiento();
+						break;
+
+					case REINA:
+						caminosReina(tablero[col][row].identificador);
+						resetColoresMovimiento();
+						break;
+
+					case REY:
+						caminosRey(tablero[col][row].identificador);
+						resetColoresMovimiento();
+						break;
+
+					default:
+						break;
+					}
+				}
+			}
+		}
+	}
+
+	// Todas las baldosas con movimientos posibles quedan en rojo
+	// Chequeamos si quedan baldosas amarillas 
+	if (tablero[posRey.col][posRey.row].colorDisplay == rojo) {
+		// Estado de Jaque
+		estado = JAQUE;
+	}
+	for (int col = 0; col < tablero.size(); col++) {
+		for (int row = 0; row < tablero[col].size(); row++) {
+			if (tablero[col][row].colorDisplay == amarillo) {
+				resetColores();
+				return estado;
+			}
+		}
+	}
+	// Estado de Jaque Mate
+	resetColores();
+	estado = JAQUEMATE;
+	return estado;
 }
 
 
@@ -790,8 +1001,22 @@ bool Tablero::intercambiaPiezas(Vector2Dint _bDestino) {
 	}
 
 	// Tipo de movimiento
-	if (tablero[_bDestino.col][_bDestino.row].colorDisplay == cyan) { // Movimiento normal
+	if ((tablero[_bDestino.col][_bDestino.row].colorDisplay == cyan) || 
+		((tablero[_bDestino.col][_bDestino.row].pieza->getTipo() == VACIO) && (tablero[_bDestino.col][_bDestino.row].colorDisplay == rojo))) { // Movimiento normal o en pasant
 		tablero[bOrigen.col][bOrigen.row].pieza->setPosMundoAnterior(tablero[bOrigen.col][bOrigen.row].pieza->getPosMundo());
+
+		// BAGUETTEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+		if ((tablero[_bDestino.col][_bDestino.row].pieza->getTipo() == VACIO) &&
+			(tablero[_bDestino.col][_bDestino.row].colorDisplay == rojo)) {
+			Vector2Dint bCursor{};
+			if (tablero[bOrigen.col][bOrigen.row].pieza->getEquipo() == BLANCO)
+				bCursor = tablero[_bDestino.col][_bDestino.row].bAbajo;
+			else
+				bCursor = tablero[_bDestino.col][_bDestino.row].bArriba;
+
+			delete tablero[bCursor.col][bCursor.row].pieza;
+			tablero[bCursor.col][bCursor.row].pieza = new bVacio({ -1, -1 }, true);
+		}
 		
 		Pieza* pAux = tablero[bOrigen.col][bOrigen.row].pieza;
 		tablero[bOrigen.col][bOrigen.row].pieza = tablero[_bDestino.col][_bDestino.row].pieza;
@@ -800,6 +1025,13 @@ bool Tablero::intercambiaPiezas(Vector2Dint _bDestino) {
 		tablero[_bDestino.col][_bDestino.row].pieza->setPosMundo(tablero[_bDestino.col][_bDestino.row].hexagono.centro);
 		tablero[_bDestino.col][_bDestino.row].pieza->setSincronia(false);
 		tablero[_bDestino.col][_bDestino.row].pieza->mover();
+
+		if (tablero[_bDestino.col][_bDestino.row].pieza->getMovido1vez())
+			tablero[_bDestino.col][_bDestino.row].pieza->setMovido1vez(false);
+		if (!tablero[_bDestino.col][_bDestino.row].pieza->getMovido()) {
+			tablero[_bDestino.col][_bDestino.row].pieza->setMovido(true);
+			tablero[_bDestino.col][_bDestino.row].pieza->setMovido1vez(true);
+		}
 
 		resetColores();
 		return true;
@@ -815,8 +1047,12 @@ bool Tablero::intercambiaPiezas(Vector2Dint _bDestino) {
 		tablero[_bDestino.col][_bDestino.row].pieza->setSincronia(false);
 		tablero[_bDestino.col][_bDestino.row].pieza->mover();
 
+		if (!tablero[_bDestino.col][_bDestino.row].pieza->getMovido())
+			tablero[_bDestino.col][_bDestino.row].pieza->setMovido(true);
+
 		resetColores();
 		return true;
+	
 	}
 }
 

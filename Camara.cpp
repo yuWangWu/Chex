@@ -1,3 +1,5 @@
+#include <cmath>
+
 #include "Camara.h"
 #include "freeglut.h"
 

@@ -14,7 +14,7 @@ protected:
 	Equipo equipo;
 	Vector2Dfloat posMundo, posMundoAnterior;
 	bool sincronia = false;
-	bool movido = false;
+	bool movido = false, movido1vez = false;
 	Color color;
 	std::vector<Vector3Dfloat> vertices;
 	std::vector<Vector3Dfloat> normales;
@@ -28,6 +28,7 @@ public:
 	Vector2Dfloat getPosMundoAnterior() const { return posMundoAnterior; };
 	bool getSincronia() const { return sincronia; };
 	bool getMovido() const { return movido; };
+	bool getMovido1vez() const { return movido1vez; };
 	Tipo getTipo() const { return tipo; };
 	Equipo getEquipo() const { return equipo; };
 
@@ -36,6 +37,7 @@ public:
 	void setPosMundoAnterior(Vector2Dfloat _posMundo) { posMundoAnterior = _posMundo; };
 	void setSincronia(bool _sincronia) { sincronia = _sincronia; };
 	void setMovido(bool _movido) { movido = _movido; };
+	void setMovido1vez(bool _movido1vez) { movido1vez = _movido1vez; };
 
 	// Misc
 	void dibuja();

@@ -2,19 +2,9 @@
 #include "Raton.h"
 #include "freeglut.h"
 
-MaqEstados::MaqEstados() {
-	camara.ojo = { 0, -100, 100 };
-	camara.direccion = { 0, 0, 0 };
-	camara.arriba = { 0, 0, 1 };
-	camara.actualiza();
-
+MaqEstados::MaqEstados() : 
+	camara({ 0, -80, 125 }, { 0, 0, 0 }, { 0, 0, 1 }) {
 	tablero.ponPiezas();
-
-	//piezasBlancas.inicializarBlanco();
-	//piezasNegras.inicializarNegro();
-
-	//piezasBlancas.asignarPosMundo(tablero);
-	//piezasNegras.asignarPosMundo(tablero);
 }
 
 void MaqEstados::dibuja() {
@@ -24,20 +14,18 @@ void MaqEstados::dibuja() {
 		break;
 
 	case IDLEBLANCO:
-		//camara.ojo = { 0, -100, 100 };
+		camara.ojo = { 0, -80, 110 };
 		camara.actualiza();
 		tablero.dibujar();
 		tablero.dibujaPiezas();
-		//dibujaPiezas();
 
 		break;
 
 	case IDLENEGRO:
-		//camara.ojo = { 0, 100, 100 };
+		camara.ojo = { 0, 80, 110 };
 		camara.actualiza();
 		tablero.dibujar();
 		tablero.dibujaPiezas();
-		//dibujaPiezas();
 
 		break;
 
@@ -48,6 +36,20 @@ void MaqEstados::dibuja() {
 		break;
 
 	case MOVENEGRO:
+		camara.actualiza();
+		tablero.dibujar();
+		tablero.dibujaPiezas();
+		break;
+
+	case FINBLANCO:
+		camara.ojo = { 80, 80, 110 };
+		camara.actualiza();
+		tablero.dibujar();
+		tablero.dibujaPiezas();
+		break;
+
+	case FINNEGRO:
+		camara.ojo = { 80, 80, 110 };
 		camara.actualiza();
 		tablero.dibujar();
 		tablero.dibujaPiezas();
@@ -64,6 +66,8 @@ void MaqEstados::tecla() {
 	case IDLENEGRO:
 	case MOVEBLANCO:
 	case MOVENEGRO:
+	case FINBLANCO:
+	case FINNEGRO:
 		
 		break;
 
@@ -87,17 +91,37 @@ void MaqEstados::raton(int boton, int e, int x, int y) {
 			break;
 
 		case MOVEBLANCO:
-			if (tablero.intercambiaPiezas(tablero.pos2baldosa(coordPinchado.x, coordPinchado.y)))
-				estado = IDLENEGRO;
+			if (tablero.intercambiaPiezas(tablero.pos2baldosa(coordPinchado.x, coordPinchado.y))) {
+				estadoRey = tablero.checkJaque(true);
+				if (estadoRey == NADA)
+					estado = IDLENEGRO;
+				else if (estadoRey == JAQUE)
+					estado = IDLENEGRO;
+				else if (estadoRey == JAQUEMATE)
+					estado = FINBLANCO;
+				ETSIDI::play("gameData/sonidos/impacto.wav");
+			}
 			else
 				estado = IDLEBLANCO;
 			break;
 
 		case MOVENEGRO:
-			if (tablero.intercambiaPiezas(tablero.pos2baldosa(coordPinchado.x, coordPinchado.y)))
-				estado = IDLEBLANCO;
+			if (tablero.intercambiaPiezas(tablero.pos2baldosa(coordPinchado.x, coordPinchado.y))) {
+				estadoRey = tablero.checkJaque(false);
+				if (estadoRey == NADA)
+					estado = IDLEBLANCO;
+				else if (estadoRey == JAQUE)
+					estado = IDLEBLANCO;
+				else if (estadoRey == JAQUEMATE)
+					estado = FINNEGRO;
+				ETSIDI::play("gameData/sonidos/impacto.wav");
+			}
 			else
 				estado = IDLENEGRO;
+			break;
+
+		case FINBLANCO:
+		case FINNEGRO:
 			break;
 
 		default:
@@ -107,11 +131,14 @@ void MaqEstados::raton(int boton, int e, int x, int y) {
 }
 
 void MaqEstados::timer() {
+	double angulo;
 	switch (estado) {
 	case IDLEBLANCO:
 	case IDLENEGRO:
 	case MOVEBLANCO:
 	case MOVENEGRO:
+	case FINBLANCO:
+	case FINNEGRO:
 		//muevePiezas();
 		break;
 
