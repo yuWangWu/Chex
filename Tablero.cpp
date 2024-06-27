@@ -122,82 +122,52 @@ void Tablero::ponPiezas() {
 		for (int row = 0; row < tablero[col].size(); row++)
 			tablero[col][row].pieza = new bVacio({ -1, -1 }, true);
 
-	// Piezas blancas (true)
-	delete tablero[1][0].pieza;
-	tablero[1][0].pieza = new Peon(tablero[1][0].hexagono.centro, true);
-	delete tablero[2][1].pieza;
-	tablero[2][1].pieza = new Peon(tablero[2][1].hexagono.centro, true);
-	delete tablero[3][2].pieza;
-	tablero[3][2].pieza = new Peon(tablero[3][2].hexagono.centro, true);
-	delete tablero[4][3].pieza;
-	tablero[4][3].pieza = new Peon(tablero[4][3].hexagono.centro, true);
-	delete tablero[5][4].pieza;
-	tablero[5][4].pieza = new Peon(tablero[5][4].hexagono.centro, true);
-	delete tablero[6][3].pieza;
-	tablero[6][3].pieza = new Peon(tablero[6][3].hexagono.centro, true);
-	delete tablero[7][2].pieza;
-	tablero[7][2].pieza = new Peon(tablero[7][2].hexagono.centro, true);
-	delete tablero[8][1].pieza;
-	tablero[8][1].pieza = new Peon(tablero[8][1].hexagono.centro, true);
-	delete tablero[9][0].pieza;
-	tablero[9][0].pieza = new Peon(tablero[9][0].hexagono.centro, true);
+	// Comienzo de piezas basadas en fichero
+	//equipo 0 para negras 1 para blancas
+	// tipo p->Peón  a->Alfil  t->Torre  c->Caballo  k->Rey(King) q->Reina(Queen)
 
-	delete tablero[2][0].pieza;
-	tablero[2][0].pieza = new Torre(tablero[2][0].hexagono.centro, true);
-	delete tablero[8][0].pieza;
-	tablero[8][0].pieza = new Torre(tablero[8][0].hexagono.centro, true);
+	char tipo;
+	int coord1, coord2;
+	bool equipo;
+
+	std::ifstream myfile;
+	myfile.open("CompactStart.txt");
+
+	if (myfile.is_open()) {
+		while (myfile >> coord1 >> coord2 >> tipo >> equipo) {
+
+			if (tipo == 'p') {
+				delete tablero[coord1][coord2].pieza;
+				tablero[coord1][coord2].pieza = new Peon(tablero[coord1][coord2].hexagono.centro, equipo);
+			}
+			else if (tipo == 't') {
+				delete tablero[coord1][coord2].pieza;
+				tablero[coord1][coord2].pieza = new Torre(tablero[coord1][coord2].hexagono.centro, equipo);
+			}
+			else if (tipo == 'a') {
+				delete tablero[coord1][coord2].pieza;
+				tablero[coord1][coord2].pieza = new Alfil(tablero[coord1][coord2].hexagono.centro, equipo);
+			}
+			else if (tipo == 'c') {
+				delete tablero[coord1][coord2].pieza;
+				tablero[coord1][coord2].pieza = new Caballo(tablero[coord1][coord2].hexagono.centro, equipo, equipo);
+			}
+			else if (tipo == 'k') {
+				delete tablero[coord1][coord2].pieza;
+				tablero[coord1][coord2].pieza = new Rey(tablero[coord1][coord2].hexagono.centro, equipo);
+			}
+			else if (tipo == 'q') {
+				delete tablero[coord1][coord2].pieza;
+				tablero[coord1][coord2].pieza = new Reina(tablero[coord1][coord2].hexagono.centro, equipo);
+			}
+
+		}
+
+	}
+	else std::cout << "no se encontró el fichero de comienzo de partida";
+
+	myfile.close();
 	
-	delete tablero[5][0].pieza;
-	tablero[5][0].pieza = new Alfil(tablero[5][0].hexagono.centro, true);
-	delete tablero[5][1].pieza;
-	tablero[5][1].pieza = new Alfil(tablero[5][1].hexagono.centro, true);
-	delete tablero[5][2].pieza;
-	tablero[5][2].pieza = new Alfil(tablero[5][2].hexagono.centro, true);
-	
-	delete tablero[3][0].pieza;
-	tablero[3][0].pieza = new Caballo(tablero[3][0].hexagono.centro, true, true);
-	delete tablero[7][0].pieza;
-	tablero[7][0].pieza = new Caballo(tablero[7][0].hexagono.centro, true, true);
-
-	delete tablero[6][0].pieza;
-	tablero[6][0].pieza = new Rey(tablero[6][0].hexagono.centro, true);
-	delete tablero[4][0].pieza;
-	tablero[4][0].pieza = new Reina(tablero[4][0].hexagono.centro, true);
-
-	// Piezas negras (false)
-	delete tablero[1][6].pieza;
-	delete tablero[2][6].pieza;
-	delete tablero[3][6].pieza;
-	delete tablero[4][6].pieza;
-	delete tablero[5][6].pieza;
-	delete tablero[6][6].pieza;
-	delete tablero[7][6].pieza;
-	delete tablero[8][6].pieza;
-	delete tablero[9][6].pieza;
-	for (int numero : {1, 2, 3, 4, 5, 6, 7, 8, 9})
-		tablero[numero][6].pieza = new Peon(tablero[numero][6].hexagono.centro, false);
-
-	delete tablero[2][7].pieza;
-	tablero[2][7].pieza = new Torre(tablero[2][7].hexagono.centro, false);
-	delete tablero[8][7].pieza;
-	tablero[8][7].pieza = new Torre(tablero[8][7].hexagono.centro, false);
-
-	delete tablero[5][10].pieza;
-	tablero[5][10].pieza = new Alfil(tablero[5][10].hexagono.centro, false);
-	delete tablero[5][9].pieza;
-	tablero[5][9].pieza = new Alfil(tablero[5][9].hexagono.centro, false);
-	delete tablero[5][8].pieza;
-	tablero[5][8].pieza = new Alfil(tablero[5][8].hexagono.centro, false);
-
-	delete tablero[3][8].pieza;
-	tablero[3][8].pieza = new Caballo(tablero[3][8].hexagono.centro, false, false);
-	delete tablero[7][8].pieza;
-	tablero[7][8].pieza = new Caballo(tablero[7][8].hexagono.centro, false, false);
-
-	delete tablero[6][9].pieza;
-	tablero[6][9].pieza = new Rey(tablero[6][9].hexagono.centro, false);
-	delete tablero[4][9].pieza;
-	tablero[4][9].pieza = new Reina(tablero[4][9].hexagono.centro, false);
 }
 
 void Tablero::dibujaPiezas() {

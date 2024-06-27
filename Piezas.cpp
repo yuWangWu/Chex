@@ -11,7 +11,7 @@ Pieza::Pieza(Vector2Dfloat _pos, bool _equipo) {
 	}
 	else {
 		equipo = NEGRO;
-		color = { 20, 20, 20 };
+		color = { 135, 62, 35 };
 
 	}
 }
