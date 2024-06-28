@@ -1,10 +1,6 @@
-#include <iostream>
-#include <fstream>
-
 #include "Tablero.h"
+
 #include "Presets.h"
-#include "freeglut.h"
-#include "Raton.h"
 
 Tablero::Tablero() {
 	int rotadorColoresfilas = 0;

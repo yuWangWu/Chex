@@ -1,13 +1,14 @@
 #pragma once
+
+// Includes del usuario
+#include "freeglut.h"
 #include "VectoresUtiles.h"
 
 class Camara {
-public:
+private:
 	Vector3Ddouble ojo;
 	Vector3Ddouble direccion;
 	Vector3Ddouble arriba;
-	double distancia, vRotacion;
-	double yAnterior;
 
 public:
 	// Constructores

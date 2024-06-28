@@ -1,8 +1,9 @@
 #pragma once
 
+#include "freeglut.h"
 #include "Tablero.h"
+#include "Raton.h"
 #include "Camara.h"
-#include "ListaPiezas.h"
 #include "ETSIDI.h"
 
 class MaqEstados {
@@ -12,6 +13,8 @@ class MaqEstados {
 	Tablero tablero;
 
 	Camara camara;
+
+	bool vistaElevada{ false };
 
 public:
 	// Inicializador

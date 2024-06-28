@@ -13,14 +13,8 @@
 #include <iostream>
 // Definiciones librerias del usuario
 #include "freeglut.h"
-// Definiciones librerias de objetos
 #include "Tablero.h"
-#include "VectoresUtiles.h"
-#include "Camara.h"
 #include "Perspectiva.h"
-#include "Raton.h"
-#include "Esfera.h"
-#include "ListaPiezas.h"
 #include "MaqEstados.h"
 
 // Definicion variables del usuario

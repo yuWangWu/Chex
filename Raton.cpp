@@ -1,7 +1,4 @@
-#include <iostream>
-
 #include "Raton.h"
-#include "freeglut.h"
 
 Vector3Ddouble Raton::MouseHandler(int boton, int estado, int x, int y) {
 	system("CLS");

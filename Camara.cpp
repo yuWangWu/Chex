@@ -1,7 +1,4 @@
-#include <cmath>
-
 #include "Camara.h"
-#include "freeglut.h"
 
 Camara::Camara(Vector3Ddouble nuevoOjo, Vector3Ddouble nuevoDireccion, Vector3Ddouble nuevoArriba) {
 	ojo = nuevoOjo;

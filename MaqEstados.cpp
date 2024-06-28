@@ -1,6 +1,4 @@
 #include "MaqEstados.h"
-#include "Raton.h"
-#include "freeglut.h"
 
 MaqEstados::MaqEstados() : 
 	camara({ 0, -80, 125 }, { 0, 0, 0 }, { 0, 0, 1 }) {
@@ -21,6 +19,9 @@ void MaqEstados::dibuja() {
 		ETSIDI::setFont("gameData/fuentes/Bitwise.ttf", 30);
 		ETSIDI::printxy("Pulse J para jugar en modo 2 jugadores", -35, 6);
 		ETSIDI::printxy("Pulse K para jugar en modo 1 jugador", -35, 3);
+
+		ETSIDI::setFont("gameData/fuentes/Bitwise.ttf", 20);
+		ETSIDI::printxy("Pulse V durante el juego para cambiar de punto de vista", -35, -5);
 		
 		ETSIDI::setFont("gameData/fuentes/Bitwise.ttf", 10);
 		ETSIDI::printxy("Trabajo de la asignatura Informática Industrial y Comunicaciones impartido en la ETSIDI-UPM", -35, -15);
@@ -28,7 +29,10 @@ void MaqEstados::dibuja() {
 		break;
 
 	case IDLEBLANCO:
-		camara.ojo = { 0, -80, 110 };
+		if (!vistaElevada)
+			camara.setOjo( {0, -80, 110} );
+		else
+			camara.setOjo( { 0, -30, 110 } );
 		camara.setArriba({ 0, 0, 1 });
 		camara.actualiza();
 		tablero.dibujar();
@@ -37,7 +41,10 @@ void MaqEstados::dibuja() {
 		break;
 
 	case IDLENEGRO:
-		camara.ojo = { 0, 80, 110 };
+		if (!vistaElevada)
+			camara.setOjo( { 0, 80, 110 } );
+		else
+			camara.setOjo( { 0, 30, 110 } );
 		camara.setArriba({ 0, 0, 1 });
 		camara.actualiza();
 		tablero.dibujar();
@@ -46,12 +53,20 @@ void MaqEstados::dibuja() {
 		break;
 
 	case MOVEBLANCO:
+		if (!vistaElevada)
+			camara.setOjo( { 0, -80, 110 } );
+		else
+			camara.setOjo( { 0, -30, 110 } );
 		camara.actualiza();
 		tablero.dibujar();
 		tablero.dibujaPiezas();
 		break;
 
 	case MOVENEGRO:
+		if (!vistaElevada)
+			camara.setOjo( { 0, 80, 110 } );
+		else
+			camara.setOjo( { 0, 30, 110 } );
 		camara.actualiza();
 		tablero.dibujar();
 		tablero.dibujaPiezas();
@@ -91,6 +106,7 @@ void MaqEstados::dibuja() {
 void MaqEstados::tecla(unsigned char tecla) {
 	switch (estado) {
 	case PINICIO:
+		vistaElevada = false;
 		if (tecla == 'j')
 			estado = IDLEBLANCO;
 		if (tecla == 'k')
@@ -101,6 +117,13 @@ void MaqEstados::tecla(unsigned char tecla) {
 	case IDLENEGRO:
 	case MOVEBLANCO:
 	case MOVENEGRO:
+		if (tecla == 'v')
+			if (vistaElevada)
+				vistaElevada = false;
+			else
+				vistaElevada = true;
+		break;
+
 	case FINBLANCO:
 		if (tecla == 'f') {
 			tablero.quitaPiezas();

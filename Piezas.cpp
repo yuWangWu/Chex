@@ -1,6 +1,6 @@
 #include "Piezas.h"
+
 #include "stb_stl_loader.h"
-#include "freeglut.h"
 
 // Funciones comunes 
 Pieza::Pieza(Vector2Dfloat _pos, bool _equipo) {

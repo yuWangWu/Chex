@@ -131,7 +131,6 @@
     <ClCompile Include="Camara.cpp" />
     <ClCompile Include="Chex.cpp" />
     <ClCompile Include="Esfera.cpp" />
-    <ClCompile Include="ListaPiezas.cpp" />
     <ClCompile Include="MaqEstados.cpp" />
     <ClCompile Include="Perspectiva.cpp" />
     <ClCompile Include="Piezas.cpp" />
@@ -145,7 +144,6 @@
     <ClInclude Include="Color.h" />
     <ClInclude Include="Esfera.h" />
     <ClInclude Include="Hexagono.h" />
-    <ClInclude Include="ListaPiezas.h" />
     <ClInclude Include="MaqEstados.h" />
     <ClInclude Include="Perspectiva.h" />
     <ClInclude Include="Piezas.h" />

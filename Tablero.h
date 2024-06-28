@@ -1,16 +1,22 @@
 #pragma once
 
+// Includes del sistema
+#include <iostream>
 #include <vector>
+#include <fstream>
 
+// Includes del usuario
+#include "freeglut.h"
+#include "Raton.h"
+#include "Tablero.h"
 #include "Baldosa.h"
-#include "Esfera.h"
 #include "Piezas.h"
 #include "ETSIDI.h"
 
 enum EstadoRey { NADA, JAQUE, JAQUEMATE };
 
 class Tablero {
-public:
+private:
 	std::vector<std::vector<Baldosa>> tablero{
 		{std::vector<Baldosa>(6)},
 		{std::vector<Baldosa>(7)},

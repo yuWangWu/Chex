@@ -1,11 +1,14 @@
 #pragma once
 
+// Includes del sistema
+#include <iostream>
+
+// Includes del usuario
+#include "freeglut.h"
 #include "VectoresUtiles.h"
-//#include "Baldosa.h"
-//#include "Tablero.h"
 
 class Raton {
-public:
+private:
 	static Vector2Dfloat posicionVentana;
 	// Posicion mundo se refiere a la 
 	// posicion en el plano zfar.

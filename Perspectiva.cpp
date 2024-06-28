@@ -1,5 +1,4 @@
 #include "Perspectiva.h"
-#include "freeglut.h"
 
 Perspectiva::Perspectiva(float nuevoFov, float nuevoAncho, float nuevoAlto, float nuevoZnear, float nuevoZfar) {
 	fov =	(nuevoFov > 10)		? nuevoFov : 10.0f;

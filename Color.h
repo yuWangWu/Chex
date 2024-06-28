@@ -5,6 +5,7 @@ public:
 	unsigned char r = 255, g = 255, b = 255;
 
 public:
+	// Operadores
 	bool operator==(Color c) {
 		if ((r == c.r) && (g == c.g) && (b == c.b))
 			return true;

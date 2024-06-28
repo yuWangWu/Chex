@@ -1,7 +1,10 @@
 #pragma once
 
+// Includes del sistema
 #include <vector>
 
+// Includes del usuario
+#include "freeglut.h"
 #include "VectoresUtiles.h"
 #include "Color.h"
 

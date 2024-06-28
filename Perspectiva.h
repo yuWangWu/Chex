@@ -1,7 +1,10 @@
 #pragma once
 
+// Includes del usuario
+#include "freeglut.h"
+
 class Perspectiva {
-public:
+private:
 	float fov;
 	float ancho, alto;
 	float znear, zfar;

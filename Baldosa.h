@@ -1,14 +1,16 @@
 #pragma once
 
+// Includes del sistema
 #include <vector>
 
+// Includes del usuario
 #include "VectoresUtiles.h"
 #include "Color.h"
 #include "Hexagono.h"
 #include "Piezas.h"
 
 class Baldosa {
-public:
+private:
 	Hexagono hexagono;
 	Vector2Dint identificador;
 	Color color, colorDisplay;
@@ -51,4 +53,6 @@ public:
 	Vector2Dint findbCaballoEsqDerAbjAbajo(Baldosa actual, const std::vector<std::vector<Baldosa>>& tablero);
 
 	void findPosicionesTodas(Baldosa actual, const std::vector<std::vector<Baldosa>>& tablero);
+
+	friend class Tablero;
 };
