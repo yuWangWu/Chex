@@ -48,15 +48,21 @@ public:
 
 	std::vector<Baldosa> operator[](int indice);
 
-	void caminosPeon(Vector2Dint _bSeleccionada);
-	void caminosAlfil(Vector2Dint _bSeleccionada);
-	void caminosTorre(Vector2Dint _bSeleccionada);
-	void caminosCaballo(Vector2Dint _bSeleccionada);
-	void caminosReina(Vector2Dint _bSeleccionada);
-	void caminosRey(Vector2Dint _bSeleccionada);
+	void caminosPeon(Vector2Dint _bSeleccionada, bool check = false);
+	void caminosAlfil(Vector2Dint _bSeleccionada, bool check = false);
+	void caminosTorre(Vector2Dint _bSeleccionada, bool check = false);
+	void caminosCaballo(Vector2Dint _bSeleccionada, bool check = false);
+	void caminosReina(Vector2Dint _bSeleccionada, bool check = false);
+	void caminosRey(Vector2Dint _bSeleccionada, bool check = false);
 	void caminosReyCheck(Vector2Dint _bSeleccionada);
 
-	bool coloreaMovimientoBaldosa(Vector2Dint _bSeleccionada, Vector2Dint _bCursor);
+	bool checkPromoPeon();
+	bool pPeonReina();
+	bool pPeonTorre();
+	bool pPeonAlfil();
+	bool pPeonCaballo();
+
+	bool coloreaMovimientoBaldosa(Vector2Dint _bSeleccionada, Vector2Dint _bCursor, bool check = false);
 	bool coloreaMovimientoBaldosaCheck(Vector2Dint _bSeleccionada, Vector2Dint _bCursor);
 
 	EstadoRey checkJaque(bool equipo);

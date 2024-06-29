@@ -127,7 +127,7 @@ void Tablero::ponPiezas() {
 	bool equipo;
 
 	std::ifstream myfile;
-	myfile.open("CompactStart.txt");
+	myfile.open("StandarStart.txt");
 
 	if (myfile.is_open()) {
 		while (myfile >> coord1 >> coord2 >> tipo >> equipo) {
@@ -160,7 +160,7 @@ void Tablero::ponPiezas() {
 		}
 
 	}
-	else std::cout << "no se encontró el fichero de comienzo de partida";
+	else  throw std::exception("No se ha encontrado el fichero de posicion de las fichas!");
 
 	myfile.close();
 	
@@ -219,19 +219,23 @@ bool Tablero::seleccionRaton(Vector3Ddouble _posicion, bool _equipo) {
 		return false;
 }
 
-void Tablero::caminosPeon(Vector2Dint _bSeleccionada) {
+void Tablero::caminosPeon(Vector2Dint _bSeleccionada, bool check) {
 	Vector2Dint bCursor;
 	if (tablero[_bSeleccionada.col][_bSeleccionada.row].pieza->getEquipo() == BLANCO) { // Blanco
 		bCursor = tablero[_bSeleccionada.col][_bSeleccionada.row].bIzqArriba;
 		if ((bCursor.existe) &&
 			(tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[_bSeleccionada.col][_bSeleccionada.row].pieza->getEquipo()) &&
 			(tablero[bCursor.col][bCursor.row].pieza->getTipo() != VACIO))
-			toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+			if (!check)
+				toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+			else toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
 		bCursor = tablero[_bSeleccionada.col][_bSeleccionada.row].bDerArriba;
 		if ((bCursor.existe) &&
 			(tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[_bSeleccionada.col][_bSeleccionada.row].pieza->getEquipo()) &&
 			(tablero[bCursor.col][bCursor.row].pieza->getTipo() != VACIO))
-			toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+			if (!check)
+				toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+			else toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
 
 		// Comprobar en pasant
 		bCursor = tablero[_bSeleccionada.col][_bSeleccionada.row].bIzqAbajo;
@@ -271,12 +275,16 @@ void Tablero::caminosPeon(Vector2Dint _bSeleccionada) {
 		if ((bCursor.existe) &&
 			(tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[_bSeleccionada.col][_bSeleccionada.row].pieza->getEquipo()) &&
 			(tablero[bCursor.col][bCursor.row].pieza->getTipo() != VACIO))
-			toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+			if (!check)
+				toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+			else toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
 		bCursor = tablero[_bSeleccionada.col][_bSeleccionada.row].bDerAbajo;
 		if ((bCursor.existe) &&
 			(tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[_bSeleccionada.col][_bSeleccionada.row].pieza->getEquipo()) &&
 			(tablero[bCursor.col][bCursor.row].pieza->getTipo() != VACIO))
-			toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+			if (!check)
+				toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+			else toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
 
 		// Comprobar en pasant
 		bCursor = tablero[_bSeleccionada.col][_bSeleccionada.row].bIzqArriba;
@@ -313,7 +321,7 @@ void Tablero::caminosPeon(Vector2Dint _bSeleccionada) {
 	}
 }
 
-void Tablero::caminosAlfil(Vector2Dint _bSeleccionada) {
+void Tablero::caminosAlfil(Vector2Dint _bSeleccionada, bool check) {
 	Vector2Dint bCursor = tablero[_bSeleccionada.col][_bSeleccionada.row].identificador;
 	// Caminos derecha
 	do {
@@ -324,7 +332,9 @@ void Tablero::caminosAlfil(Vector2Dint _bSeleccionada) {
 			}
 			else {
 				if (tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[_bSeleccionada.col][_bSeleccionada.row].pieza->getEquipo())
-					toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+					if (!check)
+						toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+					else toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
 				break;
 			}
 		}
@@ -343,7 +353,9 @@ void Tablero::caminosAlfil(Vector2Dint _bSeleccionada) {
 			}
 			else {
 				if (tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[_bSeleccionada.col][_bSeleccionada.row].pieza->getEquipo())
-					toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+					if (!check)
+						toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+					else toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
 				break;
 			}
 		}
@@ -362,7 +374,9 @@ void Tablero::caminosAlfil(Vector2Dint _bSeleccionada) {
 			}
 			else {
 				if (tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[_bSeleccionada.col][_bSeleccionada.row].pieza->getEquipo())
-					toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+					if (!check)
+						toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+					else toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
 				break;
 			}
 		}
@@ -381,7 +395,9 @@ void Tablero::caminosAlfil(Vector2Dint _bSeleccionada) {
 			}
 			else {
 				if (tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[_bSeleccionada.col][_bSeleccionada.row].pieza->getEquipo())
-					toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+					if (!check)
+						toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+					else toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
 				break;
 			}
 		}
@@ -400,7 +416,9 @@ void Tablero::caminosAlfil(Vector2Dint _bSeleccionada) {
 			}
 			else {
 				if (tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[_bSeleccionada.col][_bSeleccionada.row].pieza->getEquipo())
-					toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+					if (!check)
+						toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+					else toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
 				break;
 			}
 		}
@@ -419,7 +437,9 @@ void Tablero::caminosAlfil(Vector2Dint _bSeleccionada) {
 			}
 			else {
 				if (tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[_bSeleccionada.col][_bSeleccionada.row].pieza->getEquipo())
-					toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+					if (!check)
+						toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+					else toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
 				break;
 			}
 		}
@@ -429,7 +449,7 @@ void Tablero::caminosAlfil(Vector2Dint _bSeleccionada) {
 	} while (true);
 }
 
-void Tablero::caminosTorre(Vector2Dint _bSeleccionada) {
+void Tablero::caminosTorre(Vector2Dint _bSeleccionada, bool check) {
 	Vector2Dint bCursor;
 	// Caminos izquierda arriba
 	bCursor = tablero[_bSeleccionada.col][_bSeleccionada.row].identificador;
@@ -441,7 +461,9 @@ void Tablero::caminosTorre(Vector2Dint _bSeleccionada) {
 			}
 			else {
 				if (tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[_bSeleccionada.col][_bSeleccionada.row].pieza->getEquipo())
-					toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+					if (!check)
+						toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+					else toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
 				break;
 			}
 		}
@@ -460,7 +482,9 @@ void Tablero::caminosTorre(Vector2Dint _bSeleccionada) {
 			}
 			else {
 				if (tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[_bSeleccionada.col][_bSeleccionada.row].pieza->getEquipo())
-					toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+					if (!check)
+						toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+					else toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
 				break;
 			}
 		}
@@ -479,7 +503,9 @@ void Tablero::caminosTorre(Vector2Dint _bSeleccionada) {
 			}
 			else {
 				if (tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[_bSeleccionada.col][_bSeleccionada.row].pieza->getEquipo())
-					toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+					if (!check)
+						toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+					else toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
 				break;
 			}
 		}
@@ -498,7 +524,9 @@ void Tablero::caminosTorre(Vector2Dint _bSeleccionada) {
 			}
 			else {
 				if (tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[_bSeleccionada.col][_bSeleccionada.row].pieza->getEquipo())
-					toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+					if (!check)
+						toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+					else toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
 				break;
 			}
 		}
@@ -517,7 +545,9 @@ void Tablero::caminosTorre(Vector2Dint _bSeleccionada) {
 			}
 			else {
 				if (tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[_bSeleccionada.col][_bSeleccionada.row].pieza->getEquipo())
-					toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+					if (!check)
+						toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+					else toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
 				break;
 			}
 		}
@@ -536,7 +566,9 @@ void Tablero::caminosTorre(Vector2Dint _bSeleccionada) {
 			}
 			else {
 				if (tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[_bSeleccionada.col][_bSeleccionada.row].pieza->getEquipo())
-					toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+					if (!check)
+						toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+					else toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
 				break;
 			}
 		}
@@ -546,7 +578,7 @@ void Tablero::caminosTorre(Vector2Dint _bSeleccionada) {
 	} while (true);
 }
 
-void Tablero::caminosCaballo(Vector2Dint _bSeleccionada) {
+void Tablero::caminosCaballo(Vector2Dint _bSeleccionada, bool check) {
 	Vector2Dint bCursor;
 	// Caminos esquina izquierda
 	bCursor = tablero[_bSeleccionada.col][_bSeleccionada.row].bCaballoIzqAbajo;
@@ -555,7 +587,9 @@ void Tablero::caminosCaballo(Vector2Dint _bSeleccionada) {
 			toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
 		else
 			if (tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[_bSeleccionada.col][_bSeleccionada.row].pieza->getEquipo())
-				toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+				if (!check)
+					toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+				else toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
 	}
 	bCursor = tablero[_bSeleccionada.col][_bSeleccionada.row].bCaballoIzqArriba;
 	if (bCursor.existe) {
@@ -563,7 +597,9 @@ void Tablero::caminosCaballo(Vector2Dint _bSeleccionada) {
 			toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
 		else
 			if (tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[_bSeleccionada.col][_bSeleccionada.row].pieza->getEquipo())
-				toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+				if (!check)
+					toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+				else toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
 	}
 
 	// Caminos esquina izquierda arriba
@@ -573,7 +609,9 @@ void Tablero::caminosCaballo(Vector2Dint _bSeleccionada) {
 			toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
 		else
 			if (tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[_bSeleccionada.col][_bSeleccionada.row].pieza->getEquipo())
-				toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+				if (!check)
+					toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+				else toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
 	}
 	bCursor = tablero[_bSeleccionada.col][_bSeleccionada.row].bCaballoEsqIzqArrArriba;
 	if (bCursor.existe) {
@@ -581,7 +619,9 @@ void Tablero::caminosCaballo(Vector2Dint _bSeleccionada) {
 			toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
 		else
 			if (tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[_bSeleccionada.col][_bSeleccionada.row].pieza->getEquipo())
-				toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+				if (!check)
+					toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+				else toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
 	}
 
 	// Caminos esquina derecha arriba
@@ -591,15 +631,19 @@ void Tablero::caminosCaballo(Vector2Dint _bSeleccionada) {
 			toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
 		else
 			if (tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[_bSeleccionada.col][_bSeleccionada.row].pieza->getEquipo())
-				toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
-	}	
+				if (!check)
+					toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+				else toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
+	}
 	bCursor = tablero[_bSeleccionada.col][_bSeleccionada.row].bCaballoEsqDerArrAbajo;
 	if (bCursor.existe) {
 		if (tablero[bCursor.col][bCursor.row].pieza->getTipo() == VACIO)
 			toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
 		else
 			if (tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[_bSeleccionada.col][_bSeleccionada.row].pieza->getEquipo())
-				toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+				if (!check)
+					toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+				else toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
 	}
 
 	// Caminos esquina derecha
@@ -609,7 +653,9 @@ void Tablero::caminosCaballo(Vector2Dint _bSeleccionada) {
 			toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
 		else
 			if (tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[_bSeleccionada.col][_bSeleccionada.row].pieza->getEquipo())
-				toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+				if (!check)
+					toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+				else toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
 	}
 	bCursor = tablero[_bSeleccionada.col][_bSeleccionada.row].bCaballoDerAbajo;
 	if (bCursor.existe) {
@@ -617,7 +663,9 @@ void Tablero::caminosCaballo(Vector2Dint _bSeleccionada) {
 			toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
 		else
 			if (tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[_bSeleccionada.col][_bSeleccionada.row].pieza->getEquipo())
-				toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+				if (!check)
+					toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+				else toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
 	}
 
 	// Caminos esquina derecha abajo
@@ -627,7 +675,9 @@ void Tablero::caminosCaballo(Vector2Dint _bSeleccionada) {
 			toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
 		else
 			if (tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[_bSeleccionada.col][_bSeleccionada.row].pieza->getEquipo())
-				toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+				if (!check)
+					toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+				else toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
 	}
 	bCursor = tablero[_bSeleccionada.col][_bSeleccionada.row].bCaballoEsqDerAbjAbajo;
 	if (bCursor.existe) {
@@ -635,7 +685,9 @@ void Tablero::caminosCaballo(Vector2Dint _bSeleccionada) {
 			toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
 		else
 			if (tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[_bSeleccionada.col][_bSeleccionada.row].pieza->getEquipo())
-				toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+				if (!check)
+					toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+				else toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
 	}
 
 	// Caminos esquina izquierda abajo
@@ -645,7 +697,9 @@ void Tablero::caminosCaballo(Vector2Dint _bSeleccionada) {
 			toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
 		else
 			if (tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[_bSeleccionada.col][_bSeleccionada.row].pieza->getEquipo())
-				toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+				if (!check)
+					toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+				else toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
 	}
 	bCursor = tablero[_bSeleccionada.col][_bSeleccionada.row].bCaballoEsqIzqAbjArriba;
 	if (bCursor.existe) {
@@ -653,41 +707,43 @@ void Tablero::caminosCaballo(Vector2Dint _bSeleccionada) {
 			toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
 		else
 			if (tablero[bCursor.col][bCursor.row].pieza->getEquipo() != tablero[_bSeleccionada.col][_bSeleccionada.row].pieza->getEquipo())
-				toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+				if (!check)
+					toggleColorB(tablero[bCursor.col][bCursor.row].identificador, rojo);
+				else toggleColorB(tablero[bCursor.col][bCursor.row].identificador, cyan);
 	}
 }
 
-void Tablero::caminosReina(Vector2Dint _bSeleccionada) {
-	caminosAlfil(_bSeleccionada);
-	caminosTorre(_bSeleccionada);
+void Tablero::caminosReina(Vector2Dint _bSeleccionada, bool check) {
+	caminosAlfil(_bSeleccionada, check);
+	caminosTorre(_bSeleccionada, check);
 }
 
-void Tablero::caminosRey(Vector2Dint b) {
+void Tablero::caminosRey(Vector2Dint b, bool check) {
 	Vector2Dint bCursor;
 	bCursor = tablero[b.col][b.row].bEsqIzquierda;
-	coloreaMovimientoBaldosa(b, bCursor);
+	coloreaMovimientoBaldosa(b, bCursor, check);
 	bCursor = tablero[b.col][b.row].bIzqArriba;
-	coloreaMovimientoBaldosa(b, bCursor);
+	coloreaMovimientoBaldosa(b, bCursor, check);
 	bCursor = tablero[b.col][b.row].bEsqIzqArriba;
-	coloreaMovimientoBaldosa(b, bCursor);
+	coloreaMovimientoBaldosa(b, bCursor, check);
 	bCursor = tablero[b.col][b.row].bArriba;
-	coloreaMovimientoBaldosa(b, bCursor);
+	coloreaMovimientoBaldosa(b, bCursor, check);
 	bCursor = tablero[b.col][b.row].bEsqDerArriba;
-	coloreaMovimientoBaldosa(b, bCursor);
+	coloreaMovimientoBaldosa(b, bCursor, check);
 	bCursor = tablero[b.col][b.row].bDerArriba;
-	coloreaMovimientoBaldosa(b, bCursor);
+	coloreaMovimientoBaldosa(b, bCursor, check);
 	bCursor = tablero[b.col][b.row].bEsqDerecha;
-	coloreaMovimientoBaldosa(b, bCursor);
+	coloreaMovimientoBaldosa(b, bCursor, check);
 	bCursor = tablero[b.col][b.row].bDerAbajo;
-	coloreaMovimientoBaldosa(b, bCursor);
+	coloreaMovimientoBaldosa(b, bCursor, check);
 	bCursor = tablero[b.col][b.row].bEsqDerAbajo;
-	coloreaMovimientoBaldosa(b, bCursor);
+	coloreaMovimientoBaldosa(b, bCursor, check);
 	bCursor = tablero[b.col][b.row].bAbajo;
-	coloreaMovimientoBaldosa(b, bCursor);
+	coloreaMovimientoBaldosa(b, bCursor, check);
 	bCursor = tablero[b.col][b.row].bEsqIzqAbajo;
-	coloreaMovimientoBaldosa(b, bCursor);
+	coloreaMovimientoBaldosa(b, bCursor, check);
 	bCursor = tablero[b.col][b.row].bIzqAbajo;
-	coloreaMovimientoBaldosa(b, bCursor);
+	coloreaMovimientoBaldosa(b, bCursor, check);
 }
 
 void Tablero::caminosReyCheck(Vector2Dint b) {
@@ -719,13 +775,93 @@ void Tablero::caminosReyCheck(Vector2Dint b) {
 	coloreaMovimientoBaldosaCheck(b, bCursor);
 }
 
-bool Tablero::coloreaMovimientoBaldosa(Vector2Dint _bSeleccionada, Vector2Dint _bCursor) {
+
+bool Tablero::checkPromoPeon() {
+	for (int col = 0; col < tablero.size(); col++) {
+		if ((tablero[col][0].pieza->getTipo() == PEON) && (tablero[col][0].pieza->getEquipo() == NEGRO)) {
+			return true;
+		}
+		if ((tablero[col][tablero[col].size() - 1].pieza->getTipo() == PEON) && (tablero[col][tablero[col].size() - 1].pieza->getEquipo() == BLANCO)) {
+			return true;
+		}
+	}
+	return false;
+}
+
+bool Tablero::pPeonReina() {
+	for (int col = 0; col < tablero.size(); col++) {
+		if ((tablero[col][0].pieza->getTipo() == PEON) && (tablero[col][0].pieza->getEquipo() == NEGRO)) {
+			delete tablero[col][0].pieza;
+			tablero[col][0].pieza = new Reina(tablero[col][0].hexagono.centro, false);
+			return true;
+		}
+		if ((tablero[col][tablero[col].size() - 1].pieza->getTipo() == PEON) && (tablero[col][tablero[col].size() - 1].pieza->getEquipo() == BLANCO)) {
+			delete tablero[col][tablero[col].size() - 1].pieza;
+			tablero[col][tablero[col].size() - 1].pieza = new Reina(tablero[col][tablero[col].size() - 1].hexagono.centro, true);
+			return true;
+		}
+	}
+	return false;
+}
+
+bool Tablero::pPeonTorre() {
+	for (int col = 0; col < tablero.size(); col++) {
+		if ((tablero[col][0].pieza->getTipo() == PEON) && (tablero[col][0].pieza->getEquipo() == NEGRO)) {
+			delete tablero[col][0].pieza;
+			tablero[col][0].pieza = new Torre(tablero[col][0].hexagono.centro, false);
+			return true;
+		}
+		if ((tablero[col][tablero[col].size() - 1].pieza->getTipo() == PEON) && (tablero[col][tablero[col].size() - 1].pieza->getEquipo() == BLANCO)) {
+			delete tablero[col][tablero[col].size() - 1].pieza;
+			tablero[col][tablero[col].size() - 1].pieza = new Torre(tablero[col][tablero[col].size() - 1].hexagono.centro, true);
+			return true;
+		}
+	}
+	return false;
+}
+
+bool Tablero::pPeonAlfil() {
+	for (int col = 0; col < tablero.size(); col++) {
+		if ((tablero[col][0].pieza->getTipo() == PEON) && (tablero[col][0].pieza->getEquipo() == NEGRO)) {
+			delete tablero[col][0].pieza;
+			tablero[col][0].pieza = new Alfil(tablero[col][0].hexagono.centro, false);
+			return true;
+		}
+		if ((tablero[col][tablero[col].size() - 1].pieza->getTipo() == PEON) && (tablero[col][tablero[col].size() - 1].pieza->getEquipo() == BLANCO)) {
+			delete tablero[col][tablero[col].size() - 1].pieza;
+			tablero[col][tablero[col].size() - 1].pieza = new Alfil(tablero[col][tablero[col].size() - 1].hexagono.centro, true);
+			return true;
+		}
+	}
+	return false;
+}
+
+bool Tablero::pPeonCaballo() {
+	for (int col = 0; col < tablero.size(); col++) {
+		if ((tablero[col][0].pieza->getTipo() == PEON) && (tablero[col][0].pieza->getEquipo() == NEGRO)) {
+			delete tablero[col][0].pieza;
+			tablero[col][0].pieza = new Caballo(tablero[col][0].hexagono.centro, false, false);
+			return true;
+		}
+		if ((tablero[col][tablero[col].size() - 1].pieza->getTipo() == PEON) && (tablero[col][tablero[col].size() - 1].pieza->getEquipo() == BLANCO)) {
+			delete tablero[col][tablero[col].size() - 1].pieza;
+			tablero[col][tablero[col].size() - 1].pieza = new Caballo(tablero[col][tablero[col].size() - 1].hexagono.centro, true, true);
+			return true;
+		}
+	}
+	return false;
+}
+
+
+bool Tablero::coloreaMovimientoBaldosa(Vector2Dint _bSeleccionada, Vector2Dint _bCursor, bool check) {
 	if (_bCursor.existe) {
 		if (tablero[_bCursor.col][_bCursor.row].pieza->getTipo() == VACIO)
 			toggleColorB(tablero[_bCursor.col][_bCursor.row].identificador, cyan);
 		else
 			if (tablero[_bCursor.col][_bCursor.row].pieza->getEquipo() != tablero[_bSeleccionada.col][_bSeleccionada.row].pieza->getEquipo())
-				toggleColorB(tablero[_bCursor.col][_bCursor.row].identificador, rojo);
+				if (!check)
+					toggleColorB(tablero[_bCursor.col][_bCursor.row].identificador, rojo);
+				else toggleColorB(tablero[_bCursor.col][_bCursor.row].identificador, cyan);
 		return true;
 	}
 	return false;
@@ -743,7 +879,7 @@ bool Tablero::coloreaMovimientoBaldosaCheck(Vector2Dint _bSeleccionada, Vector2D
 
 
 EstadoRey Tablero::checkJaque(bool _equipo) {
-	EstadoRey estado{}; // Inicializado a nada
+	EstadoRey estado{};
 	Vector2Dint posRey{ false, -1, -1 };
 	
 	for (int col = 0; col < tablero.size(); col++) {
@@ -773,33 +909,33 @@ EstadoRey Tablero::checkJaque(bool _equipo) {
 				if (tablero[col][row].pieza->getEquipo() == BLANCO) {
 					switch (tablero[col][row].pieza->getTipo()) {
 					case PEON:
-						caminosPeon(tablero[col][row].identificador);
-						resetColoresMovimiento();
+						caminosPeon(tablero[col][row].identificador, true);
+						//resetColoresMovimiento();
 						break;
 
 					case ALFIL:
-						caminosAlfil(tablero[col][row].identificador);
-						resetColoresMovimiento();
+						caminosAlfil(tablero[col][row].identificador, true);
+						//resetColoresMovimiento();
 						break;
 
 					case TORRE:
-						caminosTorre(tablero[col][row].identificador);
-						resetColoresMovimiento();
+						caminosTorre(tablero[col][row].identificador, true);
+						//resetColoresMovimiento();
 						break;
 
 					case CABALLO:
-						caminosCaballo(tablero[col][row].identificador);
-						resetColoresMovimiento();
+						caminosCaballo(tablero[col][row].identificador, true);
+						//resetColoresMovimiento();
 						break;
 
 					case REINA:
-						caminosReina(tablero[col][row].identificador);
-						resetColoresMovimiento();
+						caminosReina(tablero[col][row].identificador, true);
+						//resetColoresMovimiento();
 						break;
 
 					case REY:
-						caminosRey(tablero[col][row].identificador);
-						resetColoresMovimiento();
+						caminosRey(tablero[col][row].identificador, true);
+						//resetColoresMovimiento();
 						break;
 
 					default:
@@ -815,33 +951,33 @@ EstadoRey Tablero::checkJaque(bool _equipo) {
 				if (tablero[col][row].pieza->getEquipo() == NEGRO) {
 					switch (tablero[col][row].pieza->getTipo()) {
 					case PEON:
-						caminosPeon(tablero[col][row].identificador);
-						resetColoresMovimiento();
+						caminosPeon(tablero[col][row].identificador, true);
+						//resetColoresMovimiento();
 						break;
 
 					case ALFIL:
-						caminosAlfil(tablero[col][row].identificador);
-						resetColoresMovimiento();
+						caminosAlfil(tablero[col][row].identificador, true);
+						//resetColoresMovimiento();
 						break;
 
 					case TORRE:
-						caminosTorre(tablero[col][row].identificador);
-						resetColoresMovimiento();
+						caminosTorre(tablero[col][row].identificador, true);
+						//resetColoresMovimiento();
 						break;
 
 					case CABALLO:
-						caminosCaballo(tablero[col][row].identificador);
-						resetColoresMovimiento();
+						caminosCaballo(tablero[col][row].identificador, true);
+						//resetColoresMovimiento();
 						break;
 
 					case REINA:
-						caminosReina(tablero[col][row].identificador);
-						resetColoresMovimiento();
+						caminosReina(tablero[col][row].identificador, true);
+						//resetColoresMovimiento();
 						break;
 
 					case REY:
-						caminosRey(tablero[col][row].identificador);
-						resetColoresMovimiento();
+						caminosRey(tablero[col][row].identificador, true);
+						//resetColoresMovimiento();
 						break;
 
 					default:
@@ -854,21 +990,22 @@ EstadoRey Tablero::checkJaque(bool _equipo) {
 
 	// Todas las baldosas con movimientos posibles quedan en rojo
 	// Chequeamos si quedan baldosas amarillas 
-	if (tablero[posRey.col][posRey.row].colorDisplay == rojo) {
+	if (tablero[posRey.col][posRey.row].colorDisplay == cyan) {
 		// Estado de Jaque
 		estado = JAQUE;
-	}
-	for (int col = 0; col < tablero.size(); col++) {
-		for (int row = 0; row < tablero[col].size(); row++) {
-			if (tablero[col][row].colorDisplay == amarillo) {
-				resetColores();
-				return estado;
+		for (int col = 0; col < tablero.size(); col++) {
+			for (int row = 0; row < tablero[col].size(); row++) {
+				if (tablero[col][row].colorDisplay == amarillo) {
+					resetColores();
+					return estado;
+				}
 			}
 		}
+		estado = JAQUEMATE;
+		return estado;
 	}
-	// Estado de Jaque Mate
+	
 	resetColores();
-	estado = JAQUEMATE;
 	return estado;
 }
 

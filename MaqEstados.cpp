@@ -72,6 +72,19 @@ void MaqEstados::dibuja() {
 		tablero.dibujaPiezas();
 		break;
 
+	case PPROMOCIONBLANCO:
+	case PPROMOCIONNEGRO:
+		camara.setOjo({ 0, 0, 20 });
+		camara.setArriba({ 0, 1, 0 });
+		camara.actualiza();
+
+		ETSIDI::setFont("gameData/fuentes/Bitwise.ttf", 30);
+		ETSIDI::printxy("Pulse R para convertir en reina", -35, 6);
+		ETSIDI::printxy("Pulse T para convertir en torre", -35, 3);
+		ETSIDI::printxy("Pulse A para convertir en Alfil", -35, 0);
+		ETSIDI::printxy("Pulse C para convertir en Caballo", -35, 0);
+		break;
+
 	case FINBLANCO:
 		camara.setOjo({ 0, 0, 20 });
 		camara.setArriba({ 0, 1, 0 });
@@ -106,11 +119,16 @@ void MaqEstados::dibuja() {
 void MaqEstados::tecla(unsigned char tecla) {
 	switch (estado) {
 	case PINICIO:
-		vistaElevada = false;
-		if (tecla == 'j')
+		if (tecla == 'j') {
+			vistaElevada = false;
+			tablero.resetColores();
 			estado = IDLEBLANCO;
-		if (tecla == 'k')
+		}
+		if (tecla == 'k') {
+			vistaElevada = false;
+			tablero.resetColores();
 			estado = IDLEBLANCO;
+		}
 		break;
 
 	case IDLEBLANCO:
@@ -122,6 +140,44 @@ void MaqEstados::tecla(unsigned char tecla) {
 				vistaElevada = false;
 			else
 				vistaElevada = true;
+		break;
+
+	case PPROMOCIONBLANCO:
+		if (tecla == 'r')
+			tablero.pPeonReina();
+		else if (tecla == 't')
+			tablero.pPeonTorre();
+		else if (tecla == 'a')
+			tablero.pPeonAlfil();
+		else if (tecla == 'c')
+			tablero.pPeonCaballo();
+		estadoRey = tablero.checkJaque(true);
+		if (estadoRey == JAQUE)
+			ETSIDI::play("gameData/sonidos/impacto.wav");
+		if (estadoRey == JAQUEMATE) {
+			estado = FINBLANCO;
+			break;
+		}
+		estado = IDLENEGRO;
+		break;
+
+	case PPROMOCIONNEGRO:
+		if (tecla == 'r')
+			tablero.pPeonReina();
+		else if (tecla == 't')
+			tablero.pPeonTorre();
+		else if (tecla == 'a')
+			tablero.pPeonAlfil();
+		else if (tecla == 'c')
+			tablero.pPeonCaballo();
+		estadoRey = tablero.checkJaque(false);
+		if (estadoRey == JAQUE)
+			ETSIDI::play("gameData/sonidos/impacto.wav");
+		if (estadoRey == JAQUEMATE) {
+			estado = FINBLANCO;
+			break;
+		}
+		estado = IDLEBLANCO;
 		break;
 
 	case FINBLANCO:
@@ -158,16 +214,16 @@ void MaqEstados::raton(int boton, int e, int x, int y) {
 
 		case MOVEBLANCO:
 			if (tablero.intercambiaPiezas(Raton::MouseHandler(boton, estado, x, y))) {
-				estadoRey = tablero.checkJaque(false);
-				if (estadoRey == JAQUE)
-					estado = FINNEGRO;
+				if (tablero.checkPromoPeon())
+					estado = PPROMOCIONBLANCO;
+				else estado = IDLENEGRO;
 				estadoRey = tablero.checkJaque(true);
-				if (estadoRey == NADA)
-					estado = IDLENEGRO;
-				else if (estadoRey == JAQUE)
-					estado = IDLENEGRO;
-				else if (estadoRey == JAQUEMATE)
+				if (estadoRey == JAQUE)
+					ETSIDI::play("gameData/sonidos/impacto.wav");
+				if (estadoRey == JAQUEMATE) {
 					estado = FINBLANCO;
+					break;
+				}
 				ETSIDI::play("gameData/sonidos/Move.wav");
 			}
 			else
@@ -176,16 +232,16 @@ void MaqEstados::raton(int boton, int e, int x, int y) {
 
 		case MOVENEGRO:
 			if (tablero.intercambiaPiezas(Raton::MouseHandler(boton, estado, x, y))) {
-				estadoRey = tablero.checkJaque(true);
-				if (estadoRey == JAQUE)
-					estado = FINBLANCO;
+				if (tablero.checkPromoPeon())
+					estado = PPROMOCIONNEGRO;
+				else estado = IDLEBLANCO;
 				estadoRey = tablero.checkJaque(false);
-				if (estadoRey == NADA)
-					estado = IDLEBLANCO;
-				else if (estadoRey == JAQUE)
-					estado = IDLEBLANCO;
-				else if (estadoRey == JAQUEMATE)
-					estado = FINNEGRO;
+				if (estadoRey == JAQUE)
+					ETSIDI::play("gameData/sonidos/impacto.wav");
+				if (estadoRey == JAQUEMATE) {
+					estado = FINBLANCO;
+					break;
+				}
 				ETSIDI::play("gameData/sonidos/Move.wav");
 			}
 			else

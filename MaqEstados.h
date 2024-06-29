@@ -7,7 +7,7 @@
 #include "ETSIDI.h"
 
 class MaqEstados {
-	enum Estado { PINICIO, IDLEBLANCO, IDLENEGRO, MOVEBLANCO, MOVENEGRO, FINBLANCO, FINNEGRO } estado{};
+	enum Estado { PINICIO, IDLEBLANCO, IDLENEGRO, MOVEBLANCO, MOVENEGRO, PPROMOCIONBLANCO, PPROMOCIONNEGRO, FINBLANCO, FINNEGRO } estado{};
 	EstadoRey estadoRey{};
 
 	Tablero tablero;
