@@ -1,8 +1,9 @@
 #include "MaqEstados.h"
+#include<string>
 
 MaqEstados::MaqEstados() : 
 	camara({ 0, -80, 125 }, { 0, 0, 0 }, { 0, 0, 1 }) {
-	tablero.ponPiezas();
+	tablero.ponPiezas(CaminoInicio);
 }
 
 void MaqEstados::dibuja() {
@@ -129,6 +130,14 @@ void MaqEstados::tecla(unsigned char tecla) {
 			tablero.resetColores();
 			estado = IDLEBLANCO;
 		}
+		if (tecla == 'x') {
+			CaminoInicio = "StandarStart.txt";
+			tablero.ponPiezas(CaminoInicio);
+		}
+		if (tecla == 'c') {
+			CaminoInicio = "CompactStart.txt";
+			tablero.ponPiezas(CaminoInicio);
+		}
 		break;
 
 	case IDLEBLANCO:
@@ -183,13 +192,13 @@ void MaqEstados::tecla(unsigned char tecla) {
 	case FINBLANCO:
 		if (tecla == 'f') {
 			tablero.quitaPiezas();
-			tablero.ponPiezas();
+			tablero.ponPiezas(CaminoInicio);
 			estado = PINICIO;
 		}
 	case FINNEGRO:
 		if (tecla == 'f') {
 			tablero.quitaPiezas();
-			tablero.ponPiezas();
+			tablero.ponPiezas(CaminoInicio);
 			estado = PINICIO;
 		}
 		break;

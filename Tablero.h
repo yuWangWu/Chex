@@ -4,6 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
+#include<string>
 
 // Includes del usuario
 #include "freeglut.h"
@@ -35,8 +36,10 @@ public:
 	Tablero();
 	void dibujar() const;
 
-	void ponPiezas();
+	void ponPiezas(std::string path);
 	void dibujaPiezas();
+
+	void CambioInicio();
 
 	void resetColores();
 	void resetColoresMovimiento();

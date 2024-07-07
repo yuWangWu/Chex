@@ -1,5 +1,5 @@
 #include "Tablero.h"
-
+#include<string>
 #include "Presets.h"
 
 Tablero::Tablero() {
@@ -113,7 +113,7 @@ void Tablero::resetColoresMovimiento() {
 }
 
 
-void Tablero::ponPiezas() {
+void Tablero::ponPiezas(std::string path) {
 	for (int col = 0; col < tablero.size(); col++)
 		for (int row = 0; row < tablero[col].size(); row++)
 			tablero[col][row].pieza = new bVacio({ -1, -1 }, true);
@@ -127,7 +127,7 @@ void Tablero::ponPiezas() {
 	bool equipo;
 
 	std::ifstream myfile;
-	myfile.open("StandarStart.txt");
+	myfile.open(path);
 
 	if (myfile.is_open()) {
 		while (myfile >> coord1 >> coord2 >> tipo >> equipo) {
