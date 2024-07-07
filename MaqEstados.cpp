@@ -23,6 +23,8 @@ void MaqEstados::dibuja() {
 
 		ETSIDI::setFont("gameData/fuentes/Bitwise.ttf", 20);
 		ETSIDI::printxy("Pulse V durante el juego para cambiar de punto de vista", -35, -5);
+		ETSIDI::printxy("Pulse C para el inicio compact", -35, -7);
+		ETSIDI::printxy("Pulse X para el inicio estándar", -35, -9);
 		
 		ETSIDI::setFont("gameData/fuentes/Bitwise.ttf", 10);
 		ETSIDI::printxy("Trabajo de la asignatura Informática Industrial y Comunicaciones impartido en la ETSIDI-UPM", -35, -15);
