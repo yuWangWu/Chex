@@ -49,11 +49,3 @@ public:
 	Vector3Ddouble unitario();
 	Vector3Ddouble crossProduct(Vector3Ddouble otroVector);
 };
-
-class Vector4Dfloat {
-public:
-	double x, y, z, w;
-
-public:
-	Vector4Dfloat(double nuevox, double nuevoy, double nuevoz, double nuevow);
-};

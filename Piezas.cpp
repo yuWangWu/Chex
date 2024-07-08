@@ -49,42 +49,60 @@ bVacio::bVacio(Vector2Dfloat _pos, bool _equipo) : Pieza(_pos, _equipo) {
 
 Peon::Peon(Vector2Dfloat _pos, bool _equipo) : Pieza(_pos, _equipo) {
 	tipo = PEON;
-	const char* modelo = "gameData/Peon.stl";
+	const char* modelo;
+	if (_equipo)
+		modelo = "gameData/modelos/NE555.stl";
+	else
+		modelo = "gameData/modelos/NE555.stl";
 	cargarModelo(modelo);
 }
 
 Torre::Torre(Vector2Dfloat _pos, bool _equipo) : Pieza(_pos, _equipo) {
 	tipo = TORRE;
-	const char* modelo = "gameData/Torre.stl";
+	const char* modelo;
+	if (_equipo)
+		modelo = "gameData/modelos/CAPACITOR.stl";
+	else
+		modelo = "gameData/modelos/CAPACITOR.stl";
 	cargarModelo(modelo);
 }
 
 Alfil::Alfil(Vector2Dfloat _pos, bool _equipo) : Pieza(_pos, _equipo) {
 	tipo = ALFIL;
-	const char* modelo = "gameData/Alfil.stl";
+	const char* modelo;
+	if (_equipo)
+		modelo = "gameData/modelos/LED.stl";
+	else
+		modelo = "gameData/modelos/LED.stl";
 	cargarModelo(modelo);
 }
 
 Caballo::Caballo(Vector2Dfloat _pos, bool _equipo, bool equipo) : Pieza(_pos, _equipo) {
 	tipo = CABALLO;
-	if (equipo) {
-		const char* modelo = "gameData/Caballo.stl";
-		cargarModelo(modelo);
-	}
-	else {
-		const char* modelo = "gameData/CaballoContrario.stl";
-		cargarModelo(modelo);
-	}
+	const char* modelo;
+	if (equipo) 
+		modelo = "gameData/modelos/POTENCIOMETROblanco.stl";
+	else
+		modelo = "gameData/modelos/POTENCIOMETROnegro.stl";
+	cargarModelo(modelo);
 }
 
 Reina::Reina(Vector2Dfloat _pos, bool _equipo) : Pieza(_pos, _equipo) {
 	tipo = REINA;
-	const char* modelo = "gameData/Reina.stl";
+	const char* modelo;
+	if (_equipo)
+		modelo = "gameData/modelos/ATMEGA328Pblanco.stl";
+	else
+		modelo = "gameData/modelos/ATMEGA328Pnegro.stl";
 	cargarModelo(modelo);
 }
 
 Rey::Rey(Vector2Dfloat _pos, bool _equipo) : Pieza(_pos, _equipo) {
 	tipo = REY;
-	const char* modelo = "gameData/Rey.stl";
+	const char* modelo;
+	if (_equipo)
+		modelo = "gameData/modelos/TRANSISTORblanco.stl";
+	else
+		modelo = "gameData/modelos/TRANSISTORnegro.stl";
 	cargarModelo(modelo);
 }
