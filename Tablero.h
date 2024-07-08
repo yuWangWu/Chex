@@ -38,6 +38,8 @@ public:
 
 	void ponPiezas(std::string path);
 	void dibujaPiezas();
+	void guardaPiezas(std::string path, bool turno);
+	bool cargaPartida(std::string path);
 
 	void CambioInicio();
 

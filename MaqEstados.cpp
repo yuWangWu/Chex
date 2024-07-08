@@ -18,17 +18,43 @@ void MaqEstados::dibuja() {
 		ETSIDI::printxy("CHEX, Ajedrez hexagonal", -35, 15);
 		
 		ETSIDI::setFont("gameData/fuentes/Bitwise.ttf", 30);
-		ETSIDI::printxy("Pulse J para jugar en modo 2 jugadores", -35, 6);
-		ETSIDI::printxy("Pulse K para jugar en modo 1 jugador", -35, 3);
+		ETSIDI::printxy("Pulse J para jugar con la salida estandar", -35, 6);
+		ETSIDI::printxy("Pulse K para jugar con la salida compacta", -35, 3);
+		ETSIDI::printxy("Pulse 1, 2 o 3 para cargar partida", -35, 0);
+		//si hubiera IA
+		//ETSIDI::printxy("Pulse K para jugar en modo 1 jugador", -35, -3);
 
 		ETSIDI::setFont("gameData/fuentes/Bitwise.ttf", 20);
 		ETSIDI::printxy("Pulse V durante el juego para cambiar de punto de vista", -35, -5);
-		ETSIDI::printxy("Pulse C para el inicio compact", -35, -7);
-		ETSIDI::printxy("Pulse X para el inicio estándar", -35, -9);
+		ETSIDI::printxy("Pulse P durante el juego para pausar", -35, -7);
+
 		
 		ETSIDI::setFont("gameData/fuentes/Bitwise.ttf", 10);
 		ETSIDI::printxy("Trabajo de la asignatura Informática Industrial y Comunicaciones impartido en la ETSIDI-UPM", -35, -15);
-		ETSIDI::printxy("Yu Wang Wu 2024", -35, -16);
+		ETSIDI::printxy("Yu Wang Wu y Dario Carnes Blasco 2024", -35, -16);
+		break;
+
+	case PAUSA:
+		camara.setOjo({ 0, 0, 20 });
+		camara.setArriba({ 0, 1, 0 });
+		camara.actualiza();
+
+		ETSIDI::setTextColor(0, 0.7, 1);
+		ETSIDI::setFont("gameData/fuentes/Bitwise.ttf", 80);
+		ETSIDI::printxy("Menu de Pausa", -35, 15);
+
+		ETSIDI::setFont("gameData/fuentes/Bitwise.ttf", 30);
+		ETSIDI::printxy("Pulse P para continuar", -35, 6);
+		ETSIDI::printxy("Pulse O para volver al menu de inicio", -35, 3);
+
+		ETSIDI::setFont("gameData/fuentes/Bitwise.ttf", 20);
+		ETSIDI::printxy("Pulse V durante el juego para cambiar de punto de vista", -35, -5);
+		ETSIDI::printxy("Pulse 1, 2 o 3 para guardar partida", -35, -7);
+
+
+		ETSIDI::setFont("gameData/fuentes/Bitwise.ttf", 10);
+		ETSIDI::printxy("Trabajo de la asignatura Informática Industrial y Comunicaciones impartido en la ETSIDI-UPM", -35, -15);
+		ETSIDI::printxy("Yu Wang Wu y Dario Carnes Blasco 2024", -35, -16);
 		break;
 
 	case IDLEBLANCO:
@@ -120,37 +146,89 @@ void MaqEstados::dibuja() {
 }
 
 void MaqEstados::tecla(unsigned char tecla) {
+
 	switch (estado) {
 	case PINICIO:
+		
 		if (tecla == 'j') {
+			CaminoInicio = "StandarStart.txt";
+			tablero.ponPiezas(CaminoInicio);
 			vistaElevada = false;
 			tablero.resetColores();
 			estado = IDLEBLANCO;
 		}
 		if (tecla == 'k') {
+			CaminoInicio = "CompactStart.txt";
+			tablero.ponPiezas(CaminoInicio);
 			vistaElevada = false;
 			tablero.resetColores();
 			estado = IDLEBLANCO;
 		}
-		if (tecla == 'x') {
-			CaminoInicio = "StandarStart.txt";
-			tablero.ponPiezas(CaminoInicio);
+		if (tecla == '1') {
+			vistaElevada = false;
+			tablero.resetColores();
+			if (tablero.cargaPartida("save1.txt") == 0) estado = IDLENEGRO;
+			else estado = IDLEBLANCO;
 		}
-		if (tecla == 'c') {
-			CaminoInicio = "CompactStart.txt";
-			tablero.ponPiezas(CaminoInicio);
+		if (tecla == '2') {
+			vistaElevada = false;
+			tablero.resetColores();
+			if (tablero.cargaPartida("save2.txt") == 0) estado = IDLENEGRO;
+			else estado = IDLEBLANCO;
+		}
+		if (tecla == '3') {
+			vistaElevada = false;
+			tablero.resetColores();
+			if (tablero.cargaPartida("save3.txt") == 0) estado = IDLENEGRO;
+			else estado = IDLEBLANCO;
 		}
 		break;
 
 	case IDLEBLANCO:
-	case IDLENEGRO:
 	case MOVEBLANCO:
+		if (tecla == 'v')
+			if (vistaElevada)
+				vistaElevada = false;
+			else
+				vistaElevada = true;
+		if (tecla == 'p') {
+			estadoant = 1;
+			estado = PAUSA;
+		}
+		break;
+
+	case IDLENEGRO:
 	case MOVENEGRO:
 		if (tecla == 'v')
 			if (vistaElevada)
 				vistaElevada = false;
 			else
 				vistaElevada = true;
+		if (tecla == 'p') {
+			estadoant = 0;
+			estado = PAUSA;
+		}
+
+		break;
+
+	case PAUSA:
+		if (tecla == '1')
+			tablero.guardaPiezas("save1.txt",estadoant);
+		if (tecla == '2')
+			tablero.guardaPiezas("save2.txt", estadoant);
+		if (tecla == '3')
+			tablero.guardaPiezas("save3.txt", estadoant);
+
+		if (tecla == 'o')
+			estado = PINICIO;
+
+		if (tecla == 'p'&& estadoant ==1) {
+				estado = IDLEBLANCO;
+		}
+		if (tecla == 'p' && estadoant == 0) {
+			estado = IDLENEGRO;
+		}
+
 		break;
 
 	case PPROMOCIONBLANCO:

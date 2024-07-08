@@ -8,7 +8,8 @@
 #include <string>
 
 class MaqEstados {
-	enum Estado { PINICIO, IDLEBLANCO, IDLENEGRO, MOVEBLANCO, MOVENEGRO, PPROMOCIONBLANCO, PPROMOCIONNEGRO, FINBLANCO, FINNEGRO } estado{};
+public:
+	enum Estado { PINICIO, IDLEBLANCO, IDLENEGRO, MOVEBLANCO, MOVENEGRO, PPROMOCIONBLANCO, PPROMOCIONNEGRO, FINBLANCO, FINNEGRO, PAUSA } estado{};
 	EstadoRey estadoRey{};
 
 	Tablero tablero;
@@ -19,7 +20,9 @@ class MaqEstados {
 
 	bool vistaElevada{ false };
 
+private:
 	std::string CaminoInicio = "StandarStart.txt";
+	bool estadoant = 0; // indica el estado anterior para el menu de pausa 0 negras 1 blancas
 
 public:
 	// Inicializador

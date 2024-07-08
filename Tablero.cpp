@@ -1,6 +1,7 @@
 #include "Tablero.h"
 #include<string>
 #include "Presets.h"
+#include"MaqEstados.h"
 
 Tablero::Tablero() {
 	int rotadorColoresfilas = 0;
@@ -160,7 +161,7 @@ void Tablero::ponPiezas(std::string path) {
 		}
 
 	}
-	else  throw std::exception("No se ha encontrado el fichero de posicion de las fichas!");
+	else  std::cerr << "no se ha encontrado el fichero de inicio de partida" << path << std::endl;
 
 	myfile.close();
 	
@@ -174,6 +175,96 @@ void Tablero::dibujaPiezas() {
 			}
 		}
 	}
+}
+
+void Tablero::guardaPiezas(std::string path, bool turno) {
+
+	std::ofstream save;
+	save.open(path);
+	if (save.is_open()) {
+
+		save << turno<<std::endl;
+
+		for (int i = 0; i < tablero.size(); i++) {
+			for (int j = 0; j < tablero[i].size(); j++) {
+				if (tablero[i][j].pieza->getTipo() != VACIO) {
+					save << i << " " << j << " " << tablero[i][j].pieza->getTipo() << " " << tablero[i][j].pieza->getEquipo() << " " << tablero[i][j].pieza->getMovido() << " " << tablero[i][j].pieza->getMovido1vez() << std::endl;
+				}
+			}
+		}
+	}
+	else std::cerr << "no se ha podido crear o sobreescribir el fichero de destino" << std::endl;
+
+	save.close();
+}
+
+bool Tablero::cargaPartida(std::string path) {
+	for (int col = 0; col < tablero.size(); col++)
+		for (int row = 0; row < tablero[col].size(); row++)
+			tablero[col][row].pieza = new bVacio({ -1, -1 }, true);
+
+	int coord1, coord2, tipo;
+	bool equipo, turno=0, mov1, mov;
+
+	std::ifstream save;
+	save.open(path);
+
+	if (save.is_open()) {
+
+		save >> turno;
+
+		while (save >> coord1 >> coord2 >> tipo >> equipo >> mov >> mov1) {
+
+			//si no salen cambiados de equipo, no se muy bien porque
+			if (equipo == 1) equipo = 0;
+			else if (equipo == 0) equipo = 1;
+
+			if (tipo == PEON) {
+				delete tablero[coord1][coord2].pieza;
+				tablero[coord1][coord2].pieza = new Peon(tablero[coord1][coord2].hexagono.centro, equipo);
+				tablero[coord1][coord2].pieza->setMovido(mov);
+				tablero[coord1][coord2].pieza->setMovido1vez(mov1);
+			}
+			else if (tipo == TORRE) {
+				delete tablero[coord1][coord2].pieza;
+				tablero[coord1][coord2].pieza = new Torre(tablero[coord1][coord2].hexagono.centro, equipo);
+				tablero[coord1][coord2].pieza->setMovido(mov);
+				tablero[coord1][coord2].pieza->setMovido1vez(mov1);
+			}
+			else if (tipo == ALFIL) {
+				delete tablero[coord1][coord2].pieza;
+				tablero[coord1][coord2].pieza = new Alfil(tablero[coord1][coord2].hexagono.centro, equipo);
+				tablero[coord1][coord2].pieza->setMovido(mov);
+				tablero[coord1][coord2].pieza->setMovido1vez(mov1);
+			}
+			else if (tipo == CABALLO) {
+				delete tablero[coord1][coord2].pieza;
+				tablero[coord1][coord2].pieza = new Caballo(tablero[coord1][coord2].hexagono.centro, equipo, equipo);
+				tablero[coord1][coord2].pieza->setMovido(mov);
+				tablero[coord1][coord2].pieza->setMovido1vez(mov1);
+			}
+			else if (tipo == REY) {
+				delete tablero[coord1][coord2].pieza;
+				tablero[coord1][coord2].pieza = new Rey(tablero[coord1][coord2].hexagono.centro, equipo);
+				tablero[coord1][coord2].pieza->setMovido(mov);
+				tablero[coord1][coord2].pieza->setMovido1vez(mov1);
+			}
+			else if (tipo == REINA) {
+				delete tablero[coord1][coord2].pieza;
+				tablero[coord1][coord2].pieza = new Reina(tablero[coord1][coord2].hexagono.centro, equipo);
+				tablero[coord1][coord2].pieza->setMovido(mov);
+				tablero[coord1][coord2].pieza->setMovido1vez(mov1);
+			}
+
+		}
+	}
+	else  std::cerr << "no se ha encontrado el fichero de partida guardada: "<< path <<std::endl;
+
+
+
+	save.close();
+
+	return turno;
 }
 
 // Desarrollo, borrar despues
