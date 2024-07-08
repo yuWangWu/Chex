@@ -161,7 +161,7 @@ void Tablero::ponPiezas(std::string path) {
 		}
 
 	}
-	else  std::cerr << "no se ha encontrado el fichero de inicio de partida" << path << std::endl;
+	else  std::cerr << "no se ha encontrado el fichero de inicio de partida: " << path << std::endl;
 
 	myfile.close();
 	

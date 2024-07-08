@@ -151,14 +151,14 @@ void MaqEstados::tecla(unsigned char tecla) {
 	case PINICIO:
 		
 		if (tecla == 'j') {
-			CaminoInicio = "StandarStart.txt";
+			CaminoInicio = "gamedata/StandarStart.txt";
 			tablero.ponPiezas(CaminoInicio);
 			vistaElevada = false;
 			tablero.resetColores();
 			estado = IDLEBLANCO;
 		}
 		if (tecla == 'k') {
-			CaminoInicio = "CompactStart.txt";
+			CaminoInicio = "gameData/CompactStart.txt";
 			tablero.ponPiezas(CaminoInicio);
 			vistaElevada = false;
 			tablero.resetColores();
@@ -167,19 +167,19 @@ void MaqEstados::tecla(unsigned char tecla) {
 		if (tecla == '1') {
 			vistaElevada = false;
 			tablero.resetColores();
-			if (tablero.cargaPartida("save1.txt") == 0) estado = IDLENEGRO;
+			if (tablero.cargaPartida("gameData/save1.txt") == 0) estado = IDLENEGRO;
 			else estado = IDLEBLANCO;
 		}
 		if (tecla == '2') {
 			vistaElevada = false;
 			tablero.resetColores();
-			if (tablero.cargaPartida("save2.txt") == 0) estado = IDLENEGRO;
+			if (tablero.cargaPartida("gameData/save2.txt") == 0) estado = IDLENEGRO;
 			else estado = IDLEBLANCO;
 		}
 		if (tecla == '3') {
 			vistaElevada = false;
 			tablero.resetColores();
-			if (tablero.cargaPartida("save3.txt") == 0) estado = IDLENEGRO;
+			if (tablero.cargaPartida("gameData/save3.txt") == 0) estado = IDLENEGRO;
 			else estado = IDLEBLANCO;
 		}
 		break;
@@ -213,11 +213,11 @@ void MaqEstados::tecla(unsigned char tecla) {
 
 	case PAUSA:
 		if (tecla == '1')
-			tablero.guardaPiezas("save1.txt",estadoant);
+			tablero.guardaPiezas("gameData/save1.txt",estadoant);
 		if (tecla == '2')
-			tablero.guardaPiezas("save2.txt", estadoant);
+			tablero.guardaPiezas("gameData/save2.txt", estadoant);
 		if (tecla == '3')
-			tablero.guardaPiezas("save3.txt", estadoant);
+			tablero.guardaPiezas("gameData/save3.txt", estadoant);
 
 		if (tecla == 'o')
 			estado = PINICIO;
