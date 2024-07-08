@@ -30,7 +30,7 @@ void MaqEstados::dibuja() {
 
 		
 		ETSIDI::setFont("gameData/fuentes/Bitwise.ttf", 10);
-		ETSIDI::printxy("Trabajo de la asignatura Informática Industrial y Comunicaciones impartido en la ETSIDI-UPM", -35, -15);
+		ETSIDI::printxy("Trabajo de la asignatura Informï¿½tica Industrial y Comunicaciones impartido en la ETSIDI-UPM", -35, -15);
 		ETSIDI::printxy("Yu Wang Wu y Dario Carnes Blasco 2024", -35, -16);
 		break;
 
@@ -53,7 +53,7 @@ void MaqEstados::dibuja() {
 
 
 		ETSIDI::setFont("gameData/fuentes/Bitwise.ttf", 10);
-		ETSIDI::printxy("Trabajo de la asignatura Informática Industrial y Comunicaciones impartido en la ETSIDI-UPM", -35, -15);
+		ETSIDI::printxy("Trabajo de la asignatura Informï¿½tica Industrial y Comunicaciones impartido en la ETSIDI-UPM", -35, -15);
 		ETSIDI::printxy("Yu Wang Wu y Dario Carnes Blasco 2024", -35, -16);
 		break;
 

@@ -58,11 +58,3 @@ Vector3Ddouble Vector3Ddouble::crossProduct(Vector3Ddouble otroVector) {
 		z * otroVector.x - x * otroVector.z,
 		x * otroVector.y - y * otroVector.x);
 }
-
-
-Vector4Dfloat::Vector4Dfloat(double nuevox, double nuevoy, double nuevoz, double nuevow) {
-	x = nuevox;
-	y = nuevoy;
-	z = nuevoz;
-	w = nuevow;
-}
